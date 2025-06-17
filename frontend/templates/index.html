@@ -1,0 +1,308 @@
+{% load static %}
+{% include 'layouts/header.html' %}
+<!-----{{dynamic_content}}-->
+{% load custom_filters %}
+    <!--Main Slider Start-->    
+    <!--Main Slider Start-->
+    <section class="main-slider-three" style="padding: 0px !important;">
+         {{ html_data.home1|replace_code|safe }}        
+    </section>
+    <!--Main Slider End-->
+
+    <!--About One Start-->
+    <section class="about-two" style="padding: 0px !important;">
+         {{ html_data.home2|replace_code|safe }}
+    </section>
+    <!--About One End-->
+
+    <!--About One Start-->
+    <section id="services" class="services-two animation" style="padding: 0px !important;">
+         {{ html_data.home3 |replace_code|safe }}
+    </section>
+    <!--About One End-->
+    <section id="works" class="about-two" style="padding: 0px !important;">
+        {{ html_data.home4 |replace_code|safe }}
+    </section>
+
+    <!--Video One Start-->
+    <section class="video-one" style="padding: 0px !important;">
+        {{ html_data.home5 |replace_code|safe }}
+    </section>
+    <!--Video One End-->
+
+    <!--About Two End-->
+    <section id="choose" class="about-one mt-3" style="padding: 0px !important;">
+        {{ html_data.home6 |replace_code|safe }}        
+    </section>
+    <!--About Two Start-->
+    <section id="hire" class="about-two" style="padding: 0px !important;">
+        {{ html_data.home7 |replace_code|safe }}
+    </section>
+
+
+    <!--About One Start-->
+    <section class="services-two app-feature" style="padding: 0px !important;">
+        {{ html_data.home8 |replace_code|safe }}
+    </section>
+    <!--About One End-->
+
+   
+
+<section class="testimonial-three">
+        <!-- <div class="testimonial-three__bg" style="background-image: url(assets/images/backgrounds/testimonial-bg.jpg);">
+        </div> -->
+        <div class="container">
+            <div class="row">
+                {{ html_data.TestimonialsLeft |replace_code|safe }}
+                <div class="col-xl-9">
+                    <div class="testimonial-three__right">
+                        <div class="testimonial-three__carousel thm-owl__carousel owl-theme owl-carousel"
+                            data-owl-options='{
+                                "items": 1,
+                                "margin": 38,
+                                "smartSpeed": 700,
+                                "loop":true,
+                                "autoplay": 6000,
+                                "nav":true,
+                                "dots":false,
+                                "navText": ["<span class=\"icon-down\"></span>","<span class=\"icon-right1\"></span>"],
+                                "responsive":{
+                                    "0":{
+                                        "items":1
+                                    },
+                                    "768":{
+                                        "items":2
+                                    },
+                                    "992":{
+                                        "items": 2
+                                    }
+                                }
+
+                            }'>
+                            <!--Testimonial Three Single Start-->
+
+                            {% for testimonial in testimonials %}
+                                <div class="item">
+                                <div class="testimonila-three__single">
+                                    <div class="testimonila-three__single-inner">
+                                        <div class="testimonila-three__single-bg"
+                                            style="background-image: url(assets/images/backgrounds/testimonial-1.jpg);">
+                                        </div>
+                                        <div class="testimonila-three__shape-1">
+                                            <img src="assets/images/shapes/testimonial-three-shape-1.png" alt="">
+                                        </div>
+                                        <p class="testimonila-three__text-2">“{{ testimonial.contents|striptags }}”
+                                        </p>
+                                        <div class="testimonila-three__client-info-box">
+                                            <div class="testimonila-three__client-img-box">
+                                                <div class="testimonila-three__client-img">
+                                                    <div class="testimonila-three__client-img-inner">
+                                                        <img src="{{ testimonial.photo.url }}" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="testimonila-three__quote">
+                                                    <span class="icon-quote"></span>
+                                                </div>
+                                            </div>
+                                            <div class="testimonila-three__client-content">
+                                                <h4 class="testimonila-three__client-name"></h4>
+                                                <p class="testimonila-three__client-sub-title">{{ testimonial.name }}</p>
+                                                <div class="testimonila-three__client-review">
+                                                    {% with ''|center:testimonial.rating as stars %}
+                                                    {% for _ in stars %}
+                                                        <span class="icon-star"></span>
+                                                    {% endfor %}
+                                                    {% endwith %}                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <!--Testimonial Three Single End-->
+                            <!--Testimonial Three Single Start-->                                                       
+                            <!--Testimonial Three Single End-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--Testimonial Three End-->
+    <div class="sticky-icon">
+        <a href="#services" class="Instagram"><img
+                src="./static/assets/images/new/our-services-side.webp" />Our
+            Services</a>
+
+        <a href="#works" class="Instagram"><img
+                src="./static/assets/images/new/how-it-works-side.webp" />How
+            It Works</a>
+
+        <a href="#choose" class="Instagram"><img
+                src="./static/assets/images/new/why-choose-side.webp" />Why
+            choose us</a>
+        <a href="#hire" class="Instagram"><img
+                src="./static/assets/images/new/hire-side.webp" />Hire
+            a Superaide</a>
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cardContainer = document.querySelector('.radio-scroll');
+            const scrollWrapper = document.querySelector('.new-scroll');
+
+            if (!cardContainer || !scrollWrapper) {
+                console.error('Scroll container or wrapper not found');
+                return;
+            }
+
+            const cards = cardContainer.querySelectorAll('.care-card');
+
+            if (cards.length === 0) {
+                console.error('No cards found in the container');
+                return;
+            }
+
+            // Clone all cards to create infinite scrolling effect
+            cards.forEach(card => {
+                const clone = card.cloneNode(true);
+                cardContainer.appendChild(clone);
+            });
+
+            let scrollPosition = 0;
+            let scrollSpeed = 1; // Auto-scroll speed
+            let isPaused = false;
+            let manualScrollTimeout;
+            let isDragging = false;
+            let startY;
+            let scrollTop;
+
+            // Smooth Scrolling Function
+            function smoothScroll(target) {
+                let currentPos = scrollPosition;
+                let startTime = null;
+                const duration = 500; // Adjust for smoothness
+
+                function animationStep(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    let progress = timestamp - startTime;
+                    let ease = progress / duration;
+                    ease = ease > 1 ? 1 : ease;
+
+                    scrollPosition = currentPos + (target - currentPos) * ease;
+                    cardContainer.style.transform = `translateY(-${scrollPosition}px)`;
+
+                    if (progress < duration) {
+                        requestAnimationFrame(animationStep);
+                    }
+                }
+
+                requestAnimationFrame(animationStep);
+            }
+
+            function autoScroll() {
+                if (!isPaused) {
+                    scrollPosition += scrollSpeed;
+
+                    if (scrollPosition >= cardContainer.scrollHeight / 2) {
+                        scrollPosition = 0;
+                    }
+
+                    cardContainer.style.transform = `translateY(-${scrollPosition}px)`;
+                }
+
+                requestAnimationFrame(autoScroll);
+            }
+
+            // Start auto-scrolling
+            autoScroll();
+
+            // Pause scrolling on hover
+            scrollWrapper.addEventListener('mouseenter', () => (isPaused = true));
+            scrollWrapper.addEventListener('mouseleave', () => (isPaused = false));
+
+            // Mouse Wheel Scrolling with Smooth Effect
+            scrollWrapper.addEventListener('wheel', function (event) {
+                event.preventDefault(); // Prevent default page scrolling
+
+                const delta = event.deltaY; // Get scroll direction
+                const newScrollPosition = scrollPosition + delta * 0.8; // Adjust speed if necessary
+
+                // Limit scrolling within bounds
+                if (newScrollPosition < 0) {
+                    smoothScroll(0);
+                } else if (newScrollPosition > cardContainer.scrollHeight / 2) {
+                    smoothScroll(cardContainer.scrollHeight / 2);
+                } else {
+                    smoothScroll(newScrollPosition);
+                }
+
+                // Pause auto-scrolling when user manually scrolls
+                isPaused = true;
+
+                // Resume auto-scrolling after 3 seconds
+                clearTimeout(manualScrollTimeout);
+                manualScrollTimeout = setTimeout(() => {
+                    isPaused = false;
+                }, 3000);
+            });
+
+            // Dragging Support with Smooth Effect
+            scrollWrapper.addEventListener('mousedown', (event) => {
+                isDragging = true;
+                startY = event.clientY;
+                scrollTop = scrollPosition;
+                isPaused = true;
+            });
+
+            document.addEventListener('mousemove', (event) => {
+                if (!isDragging) return;
+
+                const delta = startY - event.clientY;
+                const newScrollPosition = scrollTop + delta;
+
+                // Limit scrolling within bounds
+                if (newScrollPosition < 0) {
+                    smoothScroll(0);
+                } else if (newScrollPosition > cardContainer.scrollHeight / 2) {
+                    smoothScroll(cardContainer.scrollHeight / 2);
+                } else {
+                    smoothScroll(newScrollPosition);
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+
+                // Resume auto-scrolling after 3 seconds
+                clearTimeout(manualScrollTimeout);
+                manualScrollTimeout = setTimeout(() => {
+                    isPaused = false;
+                }, 3000);
+            });
+        });
+    </script>
+    {% include 'layouts/footer.html' %}   
+</body>
+</html>

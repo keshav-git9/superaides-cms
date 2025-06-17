@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis</title>
+</head>
+<body>
+    <h1>SEO Keywords and Ranking Information</h1>
+    
+    <h2>Top Google Search Console Keywords</h2>
+    {% if gsc_keywords %}
+        <ul>
+            {% for keyword in gsc_keywords %}
+                <li>{{ keyword }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No keywords found in Google Search Console.</p>
+    {% endif %}
+    
+    <h2>Website Meta Keywords</h2>
+    {% if website_keywords %}
+        <p>{{ website_keywords }}</p>
+    {% else %}
+        <p>No meta keywords found.</p>
+    {% endif %}
+</body>
+</html>

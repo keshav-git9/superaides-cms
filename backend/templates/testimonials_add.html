@@ -1,0 +1,258 @@
+
+{% extends 'layouts/headerapp.html' %}
+{% block content %}
+{% load static %}
+ <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+ <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script> 
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        {{form.media}}
+        {% include "layouts/sidebar-header.html" %}
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title"> {% if not data.id %} Add Testimonial Details  {% else %} Edit Testimonial Details {% endif %} </h1>                
+            </div>            
+            <!---------------------->
+            <div class="page-content fade-in-up">
+                <div class="alert bg-white">
+                    <p>                        
+                        <a class="btn btn-success" href="{% url 'testimonials-list' %}">View Testimonial List</a>
+                    </p>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">{% if not data.id %} Add Testimonial Details  {% else %} Edit Testimonial Details {% endif %} </div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        {% if not data.id %} 
+                        <form id="addpost_form" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                            {% else %}
+                        <form id="addpost_form"  method="POST" class="form-horizontal"  enctype="multipart/form-data">                              
+                        {% endif %}                        
+                             {% csrf_token %}                             
+                            <div class="ibox-body">    
+                             <ul class="nav nav-tabs tabs-line">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#tab-2-1" data-toggle="tab">Content</a>
+                                </li>                                                             
+                              </ul>
+                            
+                             <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-2-1">
+                                    <p>Please complete the form below. Mandatory fields marked <em>*</em></p>                                   
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Name <em>*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="name" id="name" value="{{data.name}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Designation  <em>*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="designation" id="designation" value="{{data.designation}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Description <em>*</em>:</label>
+                                        <div class="col-sm-9">                                                                 
+                                             <textarea name="contents" id="contents" class="ckeditor">{{data.contents}}</textarea>                                        
+                                        </div>
+                                    </div> 
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Rating <em>*</em>:</label>
+                                        <div class="col-sm-9">                                                                 
+                                            <input class="form-control" type="number" name="rating" id="rating" value="{{data.rating}}">                                   
+                                        </div>
+                                    </div> 
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Photo <em>*</em>: </label>
+                                        <div class="col-sm-9 row">                                            
+                                            <div class="col-sm-9">
+                                           <input class="form-control" style="width:300px" type="file" name="photo" id="photo" value="{{data.photo}}">
+                                           {% if data.photo %}
+                                            <img src="{{ data.photo.url }}" alt="{{ post.name }}" >
+                                            {% else %}
+                                                <p>No image uploaded.</p>
+                                            {% endif %}  
+                                        </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Status<em>*</em>: </label> 
+                                        <div class="col-sm-6">                                                                       
+                                            <select name="status" id="status" class="form-control"  style="width:300px">
+                                                <option value="1" {% if data.status == '1' %}selected{% endif %} >Enable</option>
+                                                <option value="0" {% if data.status == '0' %}selected{% endif %} >Disable</option>
+                                            </select>    
+                                        </div>
+                                    </div>   
+                                     <!----<div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Tags:</label>
+                                        <div class="col-sm-9 row">                                            
+                                            <div class="col-sm-12">
+                                           {{ form.tags }}  
+                                           </div>
+                                        </div>
+                                    </div> -->
+                                </div>                               
+                            </div>
+                            
+                        </div>                                                    
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-sm-auto">  
+                                    <button type="button" class="btn btn-info btn-cancel btn-sm" onclick="history.back();">Back </button>
+                                    {% if not data.id %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Submit</button>
+                                    {% else %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Update</button>    
+                                    {% endif %}  
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        <script>
+                            CKEDITOR.replace('contents', {
+                                filebrowserUploadUrl: '{% url "ckeditor_upload" %}?type=Files',
+                                filebrowserBrowseUrl: '{% url "ckeditor_browse" %}?type=Files',
+                            });
+                        </script>
+                    </div>
+                </div>                
+            </div>
+            <!-- END PAGE CONTENT-->
+           {% include "layouts/adminfooter.html" %}
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->
+   
+    <!-- END THEME CONFIG PANEL-->
+    <!-- BEGIN PAGA BACKDROPS-->
+    <div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>
+    <!-- END PAGA BACKDROPS-->
+    <!-- CORE PLUGINS-->
+<!-- SweetAlert 2 -->
+
+<style>
+    #id_tags div {width: 100px;float: left;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function(e) {  
+            $("#addpost_form").validate({                 
+                rules: {
+                    name: { required: true,minlength: 3  },
+                    designation: { required: true,minlength: 3  },
+                    contents: {required: true, minlength: 3 },                   
+                    rating: { required: true },
+                    photo: {  required: true },                    
+                },
+                messages: {
+                    name: { required: "Please select category." },  
+                    designation: { required: "Please enter title." },  
+                    contents: { required: "Please enter Slug."  },
+                    rating: { required: "Please enter html Contant."},
+                    photo: { required: "Please select a Photo." },                    
+                },
+                errorClass: "help-block error",
+                highlight: function(e) {
+                    $(e).closest(".form-group.row").addClass("has-error")
+                },
+                unhighlight: function(e) {
+                    $(e).closest(".form-group.row").removeClass("has-error")
+                },
+                submitHandler: function(form) {
+                    // AJAX form submission
+                    event.preventDefault();
+                    $('#udBtn').text('Please Wait...');          
+                    document.getElementById('udBtn').setAttribute("disabled","disabled"); 
+                    var editid = "{{ data.id|default:0 }}";  // Django safe way
+                    var urlpost = (editid == "0") ? "{% url 'testimonials-add' %}" : "{% url 'testimonials-edit' 0 %}".replace('0', editid);
+                    var urlpost='';
+                    var formData = new FormData(form);
+                    if (CKEDITOR.instances['contents']) {
+                        formData.append('contents', CKEDITOR.instances['contents'].getData());
+                    }
+                    
+                    $.ajax({
+                        url: urlpost,
+                        type : "POST",                       
+                        data : formData,
+                        processData : false,                        
+                        contentType:false,
+                        dataType : 'json',
+                        success: function(result) { 
+                            $('#udBtn').text('Save');              
+                            document.getElementById('udBtn').removeAttribute("disabled");  
+                            //Handle the success response from Django
+                            if(result.response == 'success'){
+                                swal.fire({
+                                    title: result.title,
+                                    type: "success",
+                                    text: result.msg,
+                                    confirmButtonColor: "#007bff",
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: true
+                                }).then(function(){ location.reload(); });
+                
+                            }else if(result.response == 'Not Saved'){ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: result.title,
+                                type: result.icon,
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                                .then(function(){ location.reload();});
+                
+                            }else{ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again!",//+result.errors
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                            }
+                        },
+                        error: function(xhr, status, error) { 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again!", //error,          //
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                });
+                                }
+                    });
+                    return false; // Prevent regular form submission
+                }
+            });
+        });
+    </script>
+   {% endblock %}
+    <!-- PAGE LEVEL PLUGINS-->
+    <!-- CORE SCRIPTS-->    
+
+

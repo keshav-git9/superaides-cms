@@ -1,0 +1,208 @@
+{% load static %}
+{% include 'layouts/header.html' %}
+<!-----{{dynamic_content}}-->
+{% load custom_filters %}
+    <section class="bg-image" style="background-image: url(/static/assets/images/about/banner.webp);">
+        <div class="overlay">
+            <div class="text-center text-content">
+                <div class="page-header__inner">
+                    <h2>Contact</h2>
+                    <ul class="thm-breadcrumb list-unstyled">
+                        <li><a href="index.php">Home</a></li>
+                        <li><span>/</span></li>
+                        <li>Contact</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!--Contact Page Start-->
+    <section class="contact-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-5">
+                    <div class="contact-page__left">
+                        <div class="contact-page__contact-list-box">
+                            {{ html_data.GetInTouch |replace_code|safe }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-7">
+                    <div class="contact-page__right">
+                        <form id="contact_form"  method="POST" enctype="multipart/form-data" 
+                            class="contact-page-form__form-box" novalidate="novalidate">
+                            {% csrf_token %}   
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="text" placeholder="Full name" name="fullname" id="fullname">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="email" placeholder="Email Address" name="email" id="email">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="text" placeholder="Phone" name="phone" id="phone">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="text" placeholder="Subject" name="subject" id="subject">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="contact-page-form__input-box text-message-box">
+                                        <textarea name="message" id="message" placeholder="Your Message"></textarea>
+                                    </div>
+                                    <div class="contact-page-form__btn-box">
+                                        <button type="submit" id="udBtn" class="thm-btn contact-page-form__btn">Send Message
+                                            <span class="icon-plus"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Contact Page End-->
+
+    <!--Google Map Start-->
+    <section class="contact-page-google-map">
+        {{ html_data.contactmap | replace_code|safe }}
+
+    </section>
+    <!--Google Map End-->
+    {% include 'layouts/footer.html' %}   
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <style>
+  .error{color: #e74c3c;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 0;}</style>   
+<script>
+    $(document).ready(function(e) {               
+        $("#contact_form").validate({ 
+            //ignore: [],  
+            rules: {
+                fullname: {required: true, minlength: 3 },
+                email: { required: true, email: true  },  
+                phone: {
+                required: true,               // Phone is required
+                minlength: 10,                // Example: Minimum length of 10 digits (adjust as needed)
+                digits: true                  // Ensure only digits are allowed
+                },   
+                subject: { required: true,minlength: 3  },   
+                message: { required: true,minlength: 3  }                    
+            },
+            messages: {
+                fullname: {
+                    required: "Please enter your full name.",
+                    minlength: "Your full name must be at least 3 characters long."
+                },
+                email: {
+                required: "Please enter your email address.",
+                email: "Please enter a valid email address.",  // Error message for invalid email format
+                },
+
+                phone: { 
+                    required: "Please enter your phone number.",
+                    minlength: "Your phone number must be at least 10 digits long.",
+                    digits: "Please enter a valid phone number with digits only."
+                }, 
+                subject: { required: "Please enter the subject."}, 
+                message: { required: "Please enter your message." }                     
+            },
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                event.preventDefault();
+                $('#udBtn').text('Please Wait...');          
+                document.getElementById('udBtn').setAttribute("disabled","disabled");  
+                
+                var formData = new FormData(form);  
+                $.ajax({
+                    url: "{% url 'contactus' %}",
+                    type : "POST",                       
+                    data : formData,
+                    processData : false,                        
+                    contentType:false,
+                    dataType : 'json',
+                    success: function(result) { 
+                        $('#udBtn').text('Save');              
+                        document.getElementById('udBtn').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){ 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                            title: result.title,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{ 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) { 
+                        $('#udBtn').text('Submit');
+                        document.getElementById('udBtn').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            type: "warning",
+                            text: error,          //"Something went wrong! Please try again! aaaaaaaaaaa",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+</script>

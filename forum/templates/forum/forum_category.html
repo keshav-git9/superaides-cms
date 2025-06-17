@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+tttttttttttttttttt
+<div class="container mt-4">
+    <h2>{{ category.name }}</h2>
+    <a href="{% url 'forum_post_create' %}" class="btn btn-success mb-3">Create New Post</a>
+    <ul class="list-group">
+        {% for post in posts %}
+        <li class="list-group-item">
+            <a href="{% url 'forum_post_detail' post.id %}">{{ post.title }}</a> 
+            <small class="text-muted float-end">by {{ post.user.name }}</small>
+        </li>
+        {% empty %}
+        <p>No Posts Found in this Category.</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

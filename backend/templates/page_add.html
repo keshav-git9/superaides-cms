@@ -1,0 +1,333 @@
+
+{% extends 'layouts/headerapp.html' %}
+{% block content %}
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        {{form.media}}
+        {% include "layouts/sidebar-header.html" %}
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title"> {% if not data.id %} Add Page Details  {% else %} Edit Page Details {% endif %} </h1>               
+            </div>            
+            <!---------------------->
+            <div class="page-content fade-in-up">
+                <div class="alert bg-white">
+                    <a class="btn btn-success" href="{% url 'page-list' %}">View Pages List</a>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">{% if not data.id %} Add Page Details  {% else %} Edit Page Details {% endif %} </div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        {% if not data.id %} 
+                        <form id="addhtml_form" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                            {% else %}
+                        <form id="addhtml_form"  method="POST" class="form-horizontal"  enctype="multipart/form-data">    
+                        {% endif %}                        
+                             {% csrf_token %}                             
+                            <div class="ibox-body">    
+                             <ul class="nav nav-tabs tabs-line">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#tab-2-1" data-toggle="tab">Content</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#tab-2-2" data-toggle="tab">Metatag</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#tab-2-3" data-toggle="tab">Design</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#tab-2-4" data-toggle="tab">Script</a>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-2-1">
+                                    <p>Please complete the form below. Mandatory fields marked <em class="text-danger">*</em></p>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Code <em class="text-danger">*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="code" id="code" value="{{data.code}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Title <em class="text-danger">*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="title" id="title" value="{{data.title}}" >
+                                        </div>
+                                    </div>
+                                                                       
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Url <em class="text-danger">*</em>: </label>
+                                        <div class="col-sm-9 row">
+                                            <div class="col-sm-2" style="margin-top: 8px;">
+                                            {{ request.scheme }}://{{ request.get_host }}/
+                                            </div>
+                                            <div class="col-sm-9">
+                                           <input class="form-control" style="width:300px" type="text" name="url" id="url" value="{{data.url}}">
+                                           </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Status  <em class="text-danger">*</em>: </label> 
+                                        <div class="col-sm-10">                                                                       
+                                            <select name="status" id="status" class="form-control"  style="width:427px">
+                                                <option value="1" {% if data.status == '1' %}selected{% endif %} >Enable</option>
+                                                <option value="0" {% if data.status == '0' %}selected{% endif %} >Disable</option>
+                                            </select>    
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Contents <em class="text-danger">*</em>:</label>
+                                        <div class="col-sm-9">                                                                 
+                                            <textarea name="contents">{{data.contents}}</textarea>                                    
+                                        </div>
+                                    </div>   
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Page Header Iimage  <em>*</em>: </label>
+                                        <div class="col-sm-9 row">                                            
+                                            <div class="col-sm-9">
+                                           <input class="form-control" style="width:300px" type="file" name="page_header_image" id="page_header_image" value="{{data.page_header_image}}">
+                                           {% if data.page_header_image %}
+                                            <img src="{{ data.page_header_image.url }}" alt="{{ data.title }}" >
+                                            {% else %}
+                                                <p>No image uploaded.</p>
+                                            {% endif %}  
+                                        </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <div class="tab-pane" id="tab-2-2">
+                                    <p>Please complete the form below. Mandatory fields marked <em>*</em></p>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Meta Title<em class="text-danger">*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="meta_title" id="meta_title" value="{{data.meta_title}}" maxlength="60">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Meta Keyword<em class="text-danger">*</em>:</label>
+                                        <div class="col-sm-9">                                                                 
+                                            <textarea name="meta_keyword" id="meta_keyword" style="width: 100%;" rows="10" maxlength="160">{{data.meta_keyword}}</textarea>                                    
+                                        </div>
+                                    </div> 
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Meta Description<em class="text-danger">*</em>:</label>
+                                        <div class="col-sm-9">                                                                 
+                                            <textarea name="meta_desc" id="meta_desc" style="width: 100%;" rows="10" maxlength="160">{{data.meta_desc}}</textarea>                                    
+                                        </div>
+                                    </div> 
+
+                                </div>
+                                <div class="tab-pane fade" id="tab-2-3">
+                                    <p><strong>Note:</strong> No need to use <code>&lt;style&gt;</code> tags — just enter your CSS directly.</p>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">CSS:</label>
+                                        <div class="col-sm-9">                                                                 
+                                            <textarea name="css" id="css" style="width: 100%;" rows="15">{{data.css}}</textarea>                                    
+                                        </div>
+                                    </div> 
+
+                                </div>
+                                <div class="tab-pane fade" id="tab-2-4">
+                                    <p><strong>Note:</strong> No need to use <code>&lt;script&gt;</code> tags — just enter your JavaScript directly.</p>
+                                    <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">JS:</label>
+                                    <div class="col-sm-9">                                                                 
+                                        <textarea name="js" id="js" style="width: 100%;" rows="15">{{data.js}}</textarea>                                    
+                                    </div>
+                                </div> </div>
+                            </div><br>
+                        </div>                                                    
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-sm-auto">  
+                                    <button type="button" class="btn btn-info btn-cancel btn-sm" onclick="history.back();">Back </button>
+                                    {% if not data.id %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Submit</button>
+                                    {% else %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Update</button>    
+                                    {% endif %}  
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        <script>
+                            CKEDITOR.replace('contents', {
+                                filebrowserUploadUrl: '{% url "ckeditor_upload" %}?type=Files',
+                                filebrowserBrowseUrl: '{% url "ckeditor_browse" %}?type=Files',
+                            });
+                        </script>
+                    </div>
+                </div>                
+            </div>
+            <!-- END PAGE CONTENT-->
+           {% include "layouts/adminfooter.html" %}
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->
+   
+    <!-- END THEME CONFIG PANEL-->
+    <!-- BEGIN PAGA BACKDROPS-->
+    <div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>
+    <!-- END PAGA BACKDROPS-->
+    <!-- CORE PLUGINS-->
+<!-- SweetAlert 2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+    $("select").niceSelect("destroy"); // Remove nice-select styling
+    });    
+
+   $(document).ready(function() { 
+    $("#title").change(function() {
+        var title = $("#title").val().trim();
+        if (title === "") return;
+
+        $.ajax({
+            type: "GET",
+            url: "{% url 'find-page-title' %}",
+            data: { "title": title },  // Send title as query param
+            success: function(response) { 
+                if (response.slug) {
+                    //alert("Generated URL: " + response.slug);
+                    $("#url").val(response.slug);  // Update the URL input field
+                    
+                }
+            },
+            error: function(xhr) {
+                alert("Error: " + xhr.responseJSON.error);
+            }
+        });
+    });
+});
+
+</script>
+
+    <script>
+        $(document).ready(function(e) {   
+            
+            $("#addhtml_form").validate({ 
+                //ignore: [],  
+                rules: {
+                    code: {required: true, minlength: 3 },
+                    title: { required: true, minlength: 3  },
+                    //description: {  required: true, minlength: 3  },
+                    contents: { required: true,minlength: 3  },
+                    meta_title: { required: true,minlength: 3  },
+                    meta_keyword: { required: true,minlength: 3  },
+                    meta_desc: { required: true,minlength: 3  },
+                },
+                messages: {
+                    code: {
+                        required: "Please enter Code.",
+                        minlength: "Your name must be at least 3 characters long."
+                    },
+                    title: { required: "Please enter title." },                
+                    //description: { required: "Please enter html description." },
+                    contents: { required: "Please enter html Contant.", minlength: "At least 3 characters."},
+                    meta_title: { required: "Please enter Meta Title." }, 
+                    meta_keyword: { required: "Please enter Meta Keyword." }, 
+                    meta_desc: { required: "Please enter Meta Description." }, 
+                },
+                errorClass: "help-block error",
+                highlight: function(e) {
+                    $(e).closest(".form-group.row").addClass("has-error")
+                },
+                unhighlight: function(e) {
+                    $(e).closest(".form-group.row").removeClass("has-error")
+                },
+                submitHandler: function(form) {
+                    // AJAX form submission
+                    event.preventDefault();
+                    $('#udBtn').text('Please Wait...');          
+                    document.getElementById('udBtn').setAttribute("disabled","disabled");  
+                    
+                    var editid = "{{ data.id|default:0 }}";  // Django safe way
+                    var urlpost = (editid == "0") ? "{% url 'page-add' %}" : "{% url 'page-edit' 0 %}".replace('0', editid);
+                    var urlpost='';
+                    var formData = new FormData(form);
+                    if (CKEDITOR.instances['contents']) {
+                        formData.append('contents', CKEDITOR.instances['contents'].getData());
+                    }
+                    
+                    $.ajax({
+                        url: urlpost,
+                        type : "POST",                       
+                        data : formData,
+                        processData : false,                        
+                        contentType:false,
+                        dataType : 'json',
+                        success: function(result) { 
+                            $('#udBtn').text('Save');              
+                            document.getElementById('udBtn').removeAttribute("disabled");  
+                            //Handle the success response from Django
+                            if(result.response == 'success'){
+                                swal.fire({
+                                    title: result.title,
+                                    type: "success",
+                                    text: result.msg,
+                                    confirmButtonColor: "#007bff",
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: true
+                                }).then(function(){ location.reload(); });
+                
+                            }else if(result.response == 'notSaved'){ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: result.title,
+                                type: result.icon,
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                                .then(function(){ location.reload();});
+                
+                            }else{ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again",
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                            }
+                        },
+                        error: function(xhr, status, error) { 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again!", //error,          //
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                });
+                                }
+                    });
+                    return false; // Prevent regular form submission
+                }
+            });
+        });
+    </script>
+   {% endblock %}
+    <!-- PAGE LEVEL PLUGINS-->
+    <!-- CORE SCRIPTS-->    
+
+

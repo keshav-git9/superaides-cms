@@ -1,0 +1,62 @@
+{% load static %}
+{% include 'layouts/header.html' %}
+<!-----{{dynamic_content}}-->
+{% load custom_filters %}
+ 
+    <!--Contact Page Start-->
+    <section class="contact-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="contact-page__left">
+                        <div class="contact-page__contact-list-box">
+                            {{ html_data.GetInTouch |replace_code|safe }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="contact-page__right">
+                        <form id="contact_form"  method="POST" enctype="multipart/form-data" 
+                            class="contact-page-form__form-box" novalidate="novalidate">
+                            {% csrf_token %}   
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="text" placeholder="Email Address" name="email" id="email">
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="email" placeholder="Password" name="password" id="password">
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">                                    
+                                    <div class="contact-page-form__btn-box">
+                                        <button type="submit" id="udBtn" class="thm-btn contact-page-form__btn">Login
+                                            <span class="icon-plus"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Contact Page End-->
+     <!--Google Map End-->
+    {% include 'layouts/footer.html' %}   
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <style>
+  .error{color: #e74c3c;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 0;}
+</style>   

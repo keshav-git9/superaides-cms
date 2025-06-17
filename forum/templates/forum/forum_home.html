@@ -1,0 +1,129 @@
+{% load static %}
+{% include 'layouts\header.html' %}
+<!-----{{dynamic_content}}-->
+{% load custom_filters %}
+    <section class="bg-image" style="height: 200px;">
+        <div class="overlay">
+            <div class="text-center text-content">
+                <div class="page-header__inner">
+                    <h2>{{ category.name }}</h2>
+                    <ul class="thm-breadcrumb list-unstyled">
+                        <li><a href="#">Home</a></li>
+                        <li><span>/</span></li>
+                        <li> Forum Categories</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-page" style="padding: 50px 0 50px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 col-lg-7">
+                <div class="blog-page__left">           
+                    
+                {% block content %}
+                <div class="container">                    
+                    <div class="row col-lg-12 col-xl-12 fadeInUp wow animated">
+                        <div class="pricing-one__package-name">
+                            <h5 class="text-uppercase">Forum Categories</h5>
+                            </div>
+                        
+                        {% for category in page_obj %}
+                        <div class="pricing-one__content" style="padding:0px;border: 0px solid #e8e7e7;margin-top: 0px;">
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="blog-page__title-1">{{ category.name }}</h3>
+                                    <p class="card-text">{{ category.description|truncatechars:100 }}</p>
+                                    <a href="{% url 'forum_category' category.id %}" class="btn btn-primary btn-sm">View Posts</a>
+                                </div>
+                            </div>
+                        </div>                        
+                        {% empty %}
+                        <p>No Categories Found.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endblock %}
+
+                    
+
+                    <div class="blog-page__pagination">
+                    <ul class="pg-pagination list-unstyled">
+                        {% if page_obj.has_previous %}
+                            <li class="prev"><a href="?page=1">&laquo; First</a></li>
+                            <li><a href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+                        {% endif %}
+                    
+                        <li class="count">
+                            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                    
+                        {% if page_obj.has_next %}
+                            <li class="next"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            <li class="next"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-5">
+                <div class="sidebar">
+                    <div  class="sidebar__single sidebar__search">
+                        <form action="" method="post" class="sidebar__search-form">
+                            {% csrf_token %}
+                            <input type="search" name="q" value="{{ search_query }}" placeholder="Search...">
+                           
+                            <button type="submit"><i class="fa fa-search-plus" style="font-size:24px"></i></button>
+                        </form> 
+                    </div>
+                    <div class="sidebar__single sidebar__category">
+                        <div class="sidebar__title-box">
+                            <h3 class="sidebar__title">Category</h3>
+                            <ul>
+                               
+                            </ul>
+                        </div>
+                        <ul class="sidebar__category-list list-unstyled">
+                            {% for cat in page_obj %}
+                            <li><a href="">{{ cat.name }} <span>({{ cat.post_count }})</span></a> </li>
+                            {% empty %}
+                                <li>No categories available.</li>
+                            {% endfor %}                            
+                        </ul>
+                    </div>
+                    <div class="sidebar__single sidebar__post">
+                        <div class="sidebar__title-box">
+                            <h3 class="sidebar__title">Recent Post</h3>
+                        </div>
+                         
+                        <ul class="sidebar__post-list list-unstyled">
+                            {% for repost in posts|slice:":5" %}
+                            <li>
+                                <!---<div class="sidebar__post-image">
+                                    <img src="assets/images/blog/blog-lp-1.jpg" alt="">
+                                </div>-->
+                                <h3 class="sidebar__post-title"><a href="">{{ repost.title }}</a></h3></li>
+                            {% endfor %}                             
+                        </ul>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!--Google Map End-->
+    {% include 'layouts\footer.html' %}   
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <style>
+  .error{color: #e74c3c;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 0;}
+</style>   

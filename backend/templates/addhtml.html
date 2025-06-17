@@ -1,0 +1,208 @@
+
+{% extends 'layouts/headerapp.html' %}
+{% block content %}
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        {{form.media}}
+        {% include "layouts/sidebar-header.html" %}
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title">{% if not data.id %} Add Html Details  {% else %} Edit Page Details {% endif %}  </h1>               
+            </div>            
+            <!---------------------->
+            <div class="page-content fade-in-up">
+                <div class="alert bg-white">
+                   <a class="btn btn-success" href="{% url 'list-html' %}">View Html List</a>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">{% if not data.id %} Add Html Details {% else %} Edit Page Details{% endif %}  </div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        {% if not data.id %} 
+                        <form id="addhtml_form" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                            {% else %}
+                        <form id="addhtml_form"  method="POST" class="form-horizontal"  enctype="multipart/form-data">    
+                        {% endif %}                        
+                             {% csrf_token %}   
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Code <em class="text-danger">*</em>:</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="code" id="code" value="{{data.code}}">
+                                </div>
+                            </div>
+                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Title <em class="text-danger">*</em>:</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="title" id="title" value="{{data.title}}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Description <em class="text-danger">*</em>:</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="description" id="description" value="{{data.description}}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Contents <em class="text-danger">*</em>:</label>
+                                <div class="col-sm-9">                                                      
+                                    <textarea name="contents" id="contents" class="ckeditor">{{data.contents}}</textarea>                                    
+                                </div>
+                            </div>                            
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-sm-auto">  
+                                    <button type="button" class="btn btn-info btn-cancel btn-sm" onclick="history.back();">Back </button>
+                                    {% if not data.id %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Submit</button>
+                                    {% else %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Update</button>    
+                                    {% endif %}  
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        <script>
+                            CKEDITOR.replace('contents', {
+                                filebrowserUploadUrl: '{% url "ckeditor_upload" %}?type=Files',
+                                filebrowserBrowseUrl: '{% url "ckeditor_browse" %}?type=Files',
+                            });
+                        </script>
+                    </div>
+                </div>                
+            </div>
+            <!-- END PAGE CONTENT-->
+           {% include "layouts/adminfooter.html" %}
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->
+   
+    <!-- END THEME CONFIG PANEL-->
+    <!-- BEGIN PAGA BACKDROPS-->
+    <div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>
+    <!-- END PAGA BACKDROPS-->
+    <!-- CORE PLUGINS-->
+<!-- SweetAlert 2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function(e) {   
+            
+            $("#addhtml_form").validate({ 
+                //ignore: [],  
+                rules: {
+                    code: {required: true, minlength: 3 },
+                    title: { required: true,minlength: 3  },
+                    description: {  required: true, minlength: 3  },
+                    //contents: { required: true,minlength: 3  }
+                },
+                messages: {
+                    code: {
+                        required: "Please enter Code.",
+                        minlength: "Your name must be at least 3 characters long."
+                    },
+                    title: { required: "Please enter title." },                
+                    description: { required: "Please enter html description." },
+                    //contents: { required: "Please enter html Contant.", minlength: "At least 3 characters."}
+                },
+                errorClass: "help-block error",
+                highlight: function(e) {
+                    $(e).closest(".form-group.row").addClass("has-error")
+                },
+                unhighlight: function(e) {
+                    $(e).closest(".form-group.row").removeClass("has-error")
+                },
+                submitHandler: function(form) {
+                    // AJAX form submission
+                    event.preventDefault();
+                    $('#udBtn').text('Please Wait...');          
+                    document.getElementById('udBtn').setAttribute("disabled","disabled");  
+                    
+                    var editid = "{{ data.id|default:0 }}";  // Django safe way
+                    var urlpost = (editid == "0") ? "{% url 'add-html' %}" : "{% url 'edit-html' 0 %}".replace('0', editid);
+                    var urlpost='';
+                    var formData = new FormData(form);
+                    if (CKEDITOR.instances['contents']) {
+                        formData.append('contents', CKEDITOR.instances['contents'].getData());
+                    }
+                    
+                    $.ajax({
+                        url: urlpost,
+                        type : "POST",                       
+                        data : formData,
+                        processData : false,                        
+                        contentType:false,
+                        dataType : 'json',
+                        success: function(result) { 
+                            $('#udBtn').text('Save');              
+                            document.getElementById('udBtn').removeAttribute("disabled");  
+                            //Handle the success response from Django
+                            //alert(result.response);
+                            if(result.response == 'success'){
+                                swal.fire({
+                                    title: result.title,
+                                    type: "success",
+                                    text: result.msg,
+                                    confirmButtonColor: "#007bff",
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: true
+                                }).then(function(){ location.reload(); });
+                
+                            }else if(result.response == 'notSaved'){ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: result.title,
+                                type: result.icon,
+                                text: result.msg,
+                                //text: result.error,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                                .then(function(){ location.reload();});
+                
+                            }else{ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again",
+                                //text: result.error,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                            }
+                        },
+                        error: function(xhr, status, error) { 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again!", //error,//,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                });
+                                }
+                    });
+                    return false; // Prevent regular form submission
+                }
+            });
+        });
+    </script>
+   {% endblock %}
+    <!-- PAGE LEVEL PLUGINS-->
+    <!-- CORE SCRIPTS-->    
+
+

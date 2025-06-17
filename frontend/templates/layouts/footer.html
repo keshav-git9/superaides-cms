@@ -1,0 +1,244 @@
+<!--Site Footer Start-->
+{% load static %}
+{% load custom_filters %}
+<footer class="site-footer site-footer-two">
+	<div class="container">
+		<div class="site-footer__top">
+			<div class="row">
+				<div class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="100ms">
+					<div class="footer-widget__column footer-widget__about">
+						<div class="footer-widget__logo">
+							<a href="/" class="super-logo">
+								<img src="{% static 'assets/images/superaid-logo.png' %}" alt="">
+								<span class="superaid-text">SuperAides</span>
+							</a>
+						</div>
+						<p class="footer-widget__about-text">{{ html_data.textfooter1 |replace_code|safe }}	</p>
+						
+					</div>
+				</div>
+				<div class="col-xl-2 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="200ms">
+					<div class="footer-widget__column footer-widget__contact">
+						<div class="footer-widget__title-box">
+							<h4 class="footer-widget__title">Quick Links</h4>
+						</div>	
+						<ul class="list-unstyled footer-widget__contact-list">                            
+                            {% get_menu_tree 'quick_links' as menu_items %}
+                            {% for item in menu_items %}
+                                <li><div class="text">
+									<p>
+                                    <a href="{% if item.link_type == 0 %}/{{ item.page }}{% else %}/{{ item.external_link }}{% endif %}">
+                                       {{ item.title }}
+                                    </a>
+									</p>
+									</div>                                    
+                                </li>
+                            {% endfor %}                       
+                        </ul>				
+					</div>
+				</div>
+				<div class="col-xl-2 col-lg-6 col-md-6 wow fadeInUp animated" data-wow-delay="300ms">
+
+					<div class="footer-widget__column footer-widget__contact">
+						<div class="footer-widget__title-box">
+							<h4 class="footer-widget__title">Support</h4>
+						</div>
+						<ul class="list-unstyled footer-widget__contact-list">                            
+                            {% get_menu_tree 'Support' as menu_items %}
+                            {% for item in menu_items %}
+                                <li><div class="text">
+									<p>
+                                    <a href="{% if item.link_type == 0 %}/{{ item.page }}{% else %}/{{ item.external_link }}{% endif %}">
+                                       {{ item.title }}
+                                    </a>
+									</p>
+									</div>                                    
+                                </li>
+                            {% endfor %}                       
+                        </ul>	
+					</div>
+
+				</div>
+				<div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="400ms">
+					<div class="footer-widget__column footer-widget__contact">
+					<div class="footer-widget__social-box">
+							<h4 class="footer-widget__social-title">Follow Us</h4>
+							<div class="site-footer__social">
+								{% if cms_settings.twitter_link %}
+								<a href="{{cms_settings.twitter_link}}"><i class="fab fa-twitter"></i></a>
+								{% else %}
+								<a href="#"><i class="fab fa-twitter"></i></a>
+								{%endif%}									
+								
+								{% if cms_settings.facebook_link %}
+								<a href="{{cms_settings.facebook_link}}"><i class="fab fa-facebook"></i></a>
+								{% else %}
+								<a href="#"><i class="fab fa-facebook"></i></a>
+								{%endif%}
+
+								{% if cms_settings.youtube_link %}
+								<a href="{{cms_settings.youtube_link}}"><i class="fab fa-youtube"></i></a>
+								{% else %}
+								<a href="#"><i class="fab fa-youtube"></i></a> 
+								{%endif%}
+								
+
+								{% if cms_settings.instagram_link %}
+								<a href="{{cms_settings.instagram_link}}"><i class="fab fa-instagram"></i></a>
+								{% else %}
+								<a href="#"><i class="fab fa-instagram"></i></a>
+								{%endif%}								
+							<!--<a href="#"><i class="fab fa-pinterest-p"></i></a>-->								
+							</div>
+						</div>
+						<div class="download-section become">
+						<h2>Download App</h2>
+						<div class="download-buttons">
+							<a href="https://play.google.com/store/apps/details?id=com.superaides.caretaker.android&hl=en"
+								target="_blank">
+								<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/512px-Google_Play_Store_badge_EN.svg.png"
+									alt="Google Play" title=" Google Play">
+							</a>
+							<a href="https://apps.apple.com/in/app/superaides/id6447917047" target="_blank">
+								<img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+									alt="App Store" title="App Store">
+							</a>
+						</div>
+					</div>
+						<!---{{ html_data.footercontact |replace_code|safe }}--->
+					</div>										
+				</div>
+			</div>
+		</div>
+		<div class="site-footer__bottom">
+			{{ html_data.footercopyright |replace_code|safe }}
+		</div>
+	</div>
+</footer>
+<!--Site Footer End-->
+</div><!-- /.page-wrapper -->
+<div class="mobile-nav__wrapper">
+	<div class="mobile-nav__overlay mobile-nav__toggler"></div>
+	<!-- /.mobile-nav__overlay -->
+	<div class="mobile-nav__content">
+		<span class="mobile-nav__close mobile-nav__toggler"><i class="fa fa-times"></i></span>
+
+		<div class="logo-box">
+			<a href="/" class="super-logo">
+				<img src="{% static 'assets/images/superaid-logo.png' %}" alt="">
+				<span class="superaid-text">SuperAides</span>
+			</a>
+		</div>
+
+		<!-- /.logo-box -->
+		<div class="mobile-nav__container"></div>		
+		<div class="main-menu-three__get-estimate-and-login login">
+			<a href="/become-a-superaide" 
+				class="main-menu-three__get-estimate">
+				Become a SuperAides <span class="icon-right1"></span></a>
+		</div>
+
+		<div class="main-menu-three__get-estimate-and-login hire-extra">
+			<a href="https://caretaker.superaides.com/auth/login" target="_blank" class="main-menu-three__get-estimate">
+				Hire a SuperAide <span class="icon-right1"></span></a>
+		</div>
+
+		<ul class="mobile-nav__contact list-unstyled">
+			<li>
+				<i class="fa fa-envelope"></i>
+				<a href="mailto:info@superaides.com">info@superaides.com</a>
+				<!-- <a href="mailto:info@progrite.com">info@progrite.com</a> -->
+			</li>
+			<li>
+				<i class="fa fa-phone-alt"></i>
+				<a href="tel:+1 (571) 901-2433">+1 (571) 901-2433</a>
+			</li>
+		</ul><!-- /.mobile-nav__contact -->
+		<div class="mobile-nav__top">
+			<div class="mobile-nav__social">
+				<a href="#" class="fab fa-twitter"></a>
+				<a href="#" class="fab fa-facebook-square"></a>
+				<a href="#" class="fab fa-pinterest-p"></a>
+				<a href="#" class="fab fa-instagram"></a>
+			</div><!-- /.mobile-nav__social -->
+		</div><!-- /.mobile-nav__top -->
+
+		<div class="main-header-three__top-left mobile-res">
+			<a href="https://play.google.com/store/apps/details?id=com.superaides.caregiver.android&amp;hl=en"
+				target="blank">
+				<p class="main-header-three__top-text">Please intsall our app
+					<span class="right-icon"><i class="fa fa-angle-right"></i></span>
+				</p>
+			</a>
+		</div>
+
+	</div>
+	<!-- /.mobile-nav__content -->
+</div>
+<!-- /.mobile-nav__wrapper -->
+
+<div class="search-popup">
+	<div class="search-popup__overlay search-toggler"></div>
+	<!-- /.search-popup__overlay -->
+	<div class="search-popup__content">
+		<form action="#">
+			<label for="search" class="sr-only">search here</label><!-- /.sr-only -->
+			<input type="text" id="search" placeholder="Search Here..." />
+			<button type="submit" aria-label="search submit" class="thm-btn">
+				<i class="icon-magnifying-glass"></i>
+			</button>
+		</form>
+	</div>
+	<!-- /.search-popup__content -->
+</div>
+<!-- /.search-popup -->
+
+<a href="#" data-target="html" class="scroll-to-target scroll-to-top"><i class="fa fa-angle-up"></i></a>
+
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6830945e413008190e9a646f/1ist0qvlb';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<script type="text/javascript"
+	src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script src="{% static 'assets/vendors/jquery/jquery-3.6.0.min.js' %} "></script>
+<script src="{% static 'assets/vendors/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jarallax/jarallax.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-ajaxchimp/jquery.ajaxchimp.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-appear/jquery.appear.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-circle-progress/jquery.circle-progress.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-magnific-popup/jquery.magnific-popup.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-validate/jquery.validate.min.js' %} "></script>
+<script src="{% static 'assets/vendors/nouislider/nouislider.min.js' %} "></script>
+<script src="{% static 'assets/vendors/odometer/odometer.min.js' %} "></script>
+<script src="{% static 'assets/vendors/swiper/swiper.min.js' %} "></script>
+<script src="{% static 'assets/vendors/tiny-slider/tiny-slider.min.js' %} "></script>
+<script src="{% static 'assets/vendors/wnumb/wNumb.min.js' %} "></script>
+<script src="{% static 'assets/vendors/wow/wow.js' %} "></script>
+<script src="{% static 'assets/vendors/isotope/isotope.js' %} "></script>
+<script src="{% static 'assets/vendors/countdown/countdown.min.js' %} "></script>
+<script src="{% static 'assets/vendors/owl-carousel/owl.carousel.min.js' %} "></script>
+<script src="{% static 'assets/vendors/bxslider/jquery.bxslider.min.js' %} "></script>
+<script src="{% static 'assets/vendors/bootstrap-select/js/bootstrap-select.min.js' %} "></script>
+<script src="{% static 'assets/vendors/vegas/vegas.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-ui/jquery-ui.js' %} "></script>
+<script src="{% static 'assets/vendors/timepicker/timePicker.js' %} "></script>
+<script src="{% static 'assets/vendors/circleType/jquery.circleType.js' %} "></script>
+<script src="{% static 'assets/vendors/circleType/jquery.lettering.min.js' %} "></script>
+<script src="{% static 'assets/vendors/sidebar-content/jquery-sidebar-content.js' %} "></script>
+<script src="{% static 'assets/vendors/tweenmax/TweenMax.min.js' %} "></script>
+<script src="{% static 'assets/vendors/nice-select/jquery.nice-select.min.js' %} "></script>
+
+
+
+
+<!-- template js -->
+<script src="{% static 'assets/js/meciy.js' %} "></script>

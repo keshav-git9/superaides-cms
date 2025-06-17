@@ -1,0 +1,310 @@
+
+{% extends 'layouts/headerapp.html' %}
+{% block content %}
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        {{form.media}}
+        {% include "layouts/sidebar-header.html" %}
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title"> {% if not data.id %} Add Post Details  {% else %} Edit Post Details {% endif %} </h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html"><i class="la la-home font-20"></i></a>
+                    </li>                    
+                </ol>
+            </div>            
+            <!---------------------->
+            <div class="page-content fade-in-up">
+                <div class="alert bg-white">
+                  <a class="btn btn-success" href="{% url 'post-list' %}">View Post List</a>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">{% if not data.id %} Add Post Details  {% else %} Edit Post Details {% endif %} </div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        {% if not data.id %} 
+                        <form id="addpost_form" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                            {% else %}
+                        <form id="addpost_form"  method="POST" class="form-horizontal"  enctype="multipart/form-data">    
+                        {% endif %}                        
+                             {% csrf_token %}                             
+                            <div class="ibox-body">    
+                             <ul class="nav nav-tabs tabs-line">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#tab-2-1" data-toggle="tab">Content</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#tab-2-2" data-toggle="tab">Metatag</a>
+                                </li>                                
+                            </ul>
+                            
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-2-1">
+                                    <p>Please complete the form below. Mandatory fields marked <em>*</em></p>
+                                   
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Blog Category <em>*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <select id="category" name="category" class="form-control" style="width:350px">   
+                                                <option value="">-- Select Blog Category --</option>                                    
+                                                {% for category in categories %}    
+                                                <option value="{{category.id}}" {% if data.category.id == category.id %}selected{% endif %} >{{category.name}}</option>                                        
+                                                {% empty %}
+                                                <option value="0" >No Category Available</option>
+                                                {% endfor %} 
+                                                </select>  
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Title <em>*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="title" id="title" value="{{data.title}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Slug  <em>*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="slug" id="slug" value="{{data.slug}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Contents <em>*</em>:</label>
+                                        <div class="col-sm-9">                                                                 
+                                            <textarea name="contents" id="contents">{{data.contents}}</textarea>                                    
+                                        </div>
+                                    </div> 
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Post Header Iimage  <em>*</em>: </label>
+                                        <div class="col-sm-9 row">                                            
+                                            <div class="col-sm-9">
+                                           <input class="form-control" style="width:300px" type="file" name="post_header_image" id="post_header_image" value="{{data.post_header_image}}">
+                                           {% if data.post_header_image %}
+                                            <img src="{{ data.post_header_image.url }}" alt="{{ post.title }}" >
+                                            {% else %}
+                                                <p>No image uploaded.</p>
+                                            {% endif %}  
+                                        </div>
+                                        </div>
+                                    </div>
+                                     <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Post Iimage  <em>*</em>: </label>
+                                        <div class="col-sm-9 row">                                            
+                                            <div class="col-sm-9">
+                                           <input class="form-control" style="width:300px" type="file" name="post_image" id="post_image" value="{{data.post_image}}">
+                                            {% if data.post_image %}
+                                            <img src="{{ data.post_image.url }}" alt="{{ post.title }}" >
+                                            {% else %}
+                                                <p>No image uploaded.</p>
+                                            {% endif %}  
+                                           </div>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Status<em>*</em>: </label> 
+                                        <div class="col-sm-9">                                                                       
+                                            <select name="status" id="status" class="form-control"  style="width:300px">
+                                                <option value="1" {% if data.status == '1' %}selected{% endif %} >Enable</option>
+                                                <option value="0" {% if data.status == '0' %}selected{% endif %} >Disable</option>
+                                            </select>    
+                                        </div>
+                                    </div>   
+                                     <!----<div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Tags:</label>
+                                        <div class="col-sm-9 row">                                            
+                                            <div class="col-sm-12">
+                                           {{ form.tags }}  
+                                           </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+
+
+                                <div class="tab-pane" id="tab-2-2">
+                                    <p>Please complete the form below. Mandatory fields marked <em>*</em></p>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Meta Title<em>*</em>:</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="meta_title" id="meta_title" value="{{data.meta_title}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Meta Keyword:</label>
+                                        <div class="col-sm-9">                                                                 
+                                            <textarea name="meta_keyword" id="meta_keyword" style="width: 100%;" rows="10">{{data.meta_keyword}}</textarea>                                    
+                                        </div>
+                                    </div> 
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Meta Description:</label>
+                                        <div class="col-sm-9">                                                                 
+                                            <textarea name="meta_desc" id="meta_desc" style="width: 100%;" rows="10">{{data.meta_desc}}</textarea>                                    
+                                        </div>
+                                    </div> 
+
+                                </div>
+                               
+                            </div>
+                            
+                        </div>                                                    
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-sm-auto">  
+                                    <button type="button" class="btn btn-info btn-cancel btn-sm" onclick="history.back();">Back </button>
+                                    {% if not data.id %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Submit</button>
+                                    {% else %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Update</button>    
+                                    {% endif %}  
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        <script>
+                            CKEDITOR.replace('contents', {
+                                filebrowserUploadUrl: '{% url "ckeditor_upload" %}?type=Files',
+                                filebrowserBrowseUrl: '{% url "ckeditor_browse" %}?type=Files',
+                            });
+                        </script>
+                    </div>
+                </div>                
+            </div>
+            <!-- END PAGE CONTENT-->
+           {% include "layouts/adminfooter.html" %}
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->
+   
+    <!-- END THEME CONFIG PANEL-->
+    <!-- BEGIN PAGA BACKDROPS-->
+    <div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>
+    <!-- END PAGA BACKDROPS-->
+    <!-- CORE PLUGINS-->
+<!-- SweetAlert 2 -->
+
+<style>
+    #id_tags div {width: 100px;float: left;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function(e) {  
+            $("#addpost_form").validate({                 
+                rules: {
+                    category: { required: true },
+                    title: { required: true,minlength: 3  },
+                    slug: {required: true, minlength: 3 },                   
+                    contents: { required: true,minlength: 3  },
+                    //post_image: {  required: true, minlength: 3  },                    
+                },
+                messages: {
+                    category: { required: "Please select category." },  
+                    title: { required: "Please enter title." },  
+                    slug: {
+                        required: "Please enter Slug.",
+                        minlength: "Your name must be at least 3 characters long."
+                    },
+                    contents: { required: "Please enter html Contant.", minlength: "At least 3 characters."},
+                    //post_image: { required: "Please select a post image." },                    
+                },
+                errorClass: "help-block error",
+                highlight: function(e) {
+                    $(e).closest(".form-group.row").addClass("has-error")
+                },
+                unhighlight: function(e) {
+                    $(e).closest(".form-group.row").removeClass("has-error")
+                },
+                submitHandler: function(form) {
+                    // AJAX form submission
+                    event.preventDefault();
+                    $('#udBtn').text('Please Wait...');          
+                    document.getElementById('udBtn').setAttribute("disabled","disabled"); 
+                    var editid = "{{ data.id|default:0 }}";  // Django safe way
+                    var urlpost = (editid == "0") ? "{% url 'post-add' %}" : "{% url 'post-edit' 0 %}".replace('0', editid);
+                    var urlpost='';
+                    var formData = new FormData(form);
+                    if (CKEDITOR.instances['contents']) {
+                        formData.append('contents', CKEDITOR.instances['contents'].getData());
+                    }
+                    
+                    $.ajax({
+                        url: urlpost,
+                        type : "POST",                       
+                        data : formData,
+                        processData : false,                        
+                        contentType:false,
+                        dataType : 'json',
+                        success: function(result) { 
+                            $('#udBtn').text('Save');              
+                            document.getElementById('udBtn').removeAttribute("disabled");  
+                            //Handle the success response from Django
+                            if(result.response == 'success'){
+                                swal.fire({
+                                    title: result.title,
+                                    type: "success",
+                                    text: result.msg,
+                                    confirmButtonColor: "#007bff",
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: true
+                                }).then(function(){ location.reload(); });
+                
+                            }else if(result.response == 'Not Saved'){ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: result.title,
+                                type: result.icon,
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                                .then(function(){ location.reload();});
+                
+                            }else{ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again!",//+result.errors
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                            }
+                        },
+                        error: function(xhr, status, error) { 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again!", //error,          //
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                });
+                                }
+                    });
+                    return false; // Prevent regular form submission
+                }
+            });
+        });
+    </script>
+   {% endblock %}
+    <!-- PAGE LEVEL PLUGINS-->
+    <!-- CORE SCRIPTS-->    
+
+

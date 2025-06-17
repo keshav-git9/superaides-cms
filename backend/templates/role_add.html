@@ -1,0 +1,176 @@
+
+{% extends 'layouts/headerapp.html' %}
+{% block content %}
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        {{form.media}}
+        {% include "layouts/sidebar-header.html" %}
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title"> {% if not data.id %} Add Group (Role) Details {% else %} Edit Group (Role) Details {% endif %}</h1>                
+            </div>            
+            <!---------------------->
+            <div class="page-content fade-in-up">
+                <div class="alert bg-white">
+                    <a class="btn btn-success" href="{% url 'group-list'%}" >Group (Role) List</a>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title"> {% if not data.id %} Add Group (Role) Details {% else %} Edit Group (Role) Details {% endif %}</div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        {% if not data.id %} 
+                        <form id="addhtml_form" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                            {% else %}
+                        <form id="addhtml_form"  method="POST" class="form-horizontal"  enctype="multipart/form-data">    
+                        {% endif %}                        
+                             {% csrf_token %}   
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Group (Role) Name </label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="name" id="name" value="{{data.name}}">
+                                </div>
+                            </div>                                                                          
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-sm-auto">  
+                                    <button type="button" class="btn btn-info btn-cancel btn-sm">Back </button>
+                                    {% if not data.id %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Save</button>
+                                    {% else %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Update</button>    
+                                    {% endif %}  
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        <script>
+                            CKEDITOR.replace('contents', {
+                                filebrowserUploadUrl: '{% url "ckeditor_upload" %}?type=Files',
+                                filebrowserBrowseUrl: '{% url "ckeditor_browse" %}?type=Files',
+                            });
+                        </script>
+                    </div>
+                </div>                
+            </div>
+            <!-- END PAGE CONTENT-->
+           {% include "layouts/adminfooter.html" %}
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->
+   
+    <!-- END THEME CONFIG PANEL-->
+    <!-- BEGIN PAGA BACKDROPS-->
+    <div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>
+    <!-- END PAGA BACKDROPS-->
+    <!-- CORE PLUGINS-->
+<!-- SweetAlert 2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function(e) {               
+            $("#addhtml_form").validate({ 
+                //ignore: [],  
+                rules: {
+                    name: {required: true, minlength: 3 }                                   
+                },
+                messages: {
+                    name: {
+                        required: "Please enter Group (Role) Name.",
+                        minlength: "Your name must be at least 3 characters long."
+                    }                                   
+                },
+                errorClass: "help-block error",
+                highlight: function(e) {
+                    $(e).closest(".form-group.row").addClass("has-error")
+                },
+                unhighlight: function(e) {
+                    $(e).closest(".form-group.row").removeClass("has-error")
+                },
+                submitHandler: function(form) {
+                    // AJAX form submission
+                    event.preventDefault();
+                    $('#udBtn').text('Please Wait...');          
+                    document.getElementById('udBtn').setAttribute("disabled","disabled");  
+                    
+                    var editid = "{{ data.id|default:0 }}";  // Django safe way
+                    var urlpost = (editid == "0") ? "{% url 'group-add' %}" : "{% url 'group-edit' 0 %}".replace('0', editid);
+                    var urlpost='';
+                    var formData = new FormData(form);  
+                    $.ajax({
+                        url: urlpost,
+                        type : "POST",                       
+                        data : formData,
+                        processData : false,                        
+                        contentType:false,
+                        dataType : 'json',
+                        success: function(result) { 
+                            $('#udBtn').text('Save');              
+                            document.getElementById('udBtn').removeAttribute("disabled");  
+                            //Handle the success response from Django
+                            if(result.response == 'success'){
+                                swal.fire({
+                                    title: result.title,
+                                    type: "success",
+                                    text: result.msg,
+                                    confirmButtonColor: "#007bff",
+                                    confirmButtonText: "Ok",
+                                    closeOnConfirm: true
+                                }).then(function(){ location.reload(); });
+                
+                            }else if(result.response == 'Not Saved'){ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: result.title,
+                                type: result.icon,
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                                .then(function(){ location.reload();});
+                
+                            }else{ 
+                                $('#udBtn').text('Submit');
+                                document.getElementById('udBtn').removeAttribute("disabled");
+                                swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: "Something went wrong! Please try again",
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                })
+                            }
+                        },
+                        error: function(xhr, status, error) { 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                                title: "Error",
+                                type: "warning",
+                                text: error,          //"Something went wrong! Please try again! aaaaaaaaaaa",
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                                });
+                                }
+                    });
+                    return false; // Prevent regular form submission
+                }
+            });
+        });
+    </script>
+   {% endblock %}
+    <!-- PAGE LEVEL PLUGINS-->
+    <!-- CORE SCRIPTS-->    
+
+

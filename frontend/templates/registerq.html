@@ -1,0 +1,339 @@
+{% load static %}
+<!-----{{dynamic_content}}-->
+
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>{{page_content.title}}</title>  
+    <meta title="{{page_content.meta_title}}" /> 
+    <meta name="description" content="{{page_content.meta_desc}}" />    
+    <meta description="{{page_content.meta_desc}}" rel="stylesheet" />
+    <meta name="keywords" content="{{ page_content.meta_keyword}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/favicons/apple-touch-icon.png' %} " rel="stylesheet" />
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ cms_settings.existing_logo.url }}" rel="stylesheet" />
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ cms_settings.existing_logo.url }}" rel="stylesheet" />
+        <link rel="manifest" href="{{ cms_settings.existing_logo.url }}" rel="stylesheet" />
+            <!-- fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">    
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>    
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet">    
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet">    
+        <link rel="stylesheet" href="{% static 'assets/vendors/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/animate/animate.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/animate/custom-animate.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/fontawesome/css/all.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/jarallax/jarallax.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/jquery-magnific-popup/jquery.magnific-popup.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/nouislider/nouislider.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/nouislider/nouislider.pips.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/odometer/odometer.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/swiper/swiper.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/meciy-icons/style.css">
+        <link rel="stylesheet" href="{% static 'assets/vendors/tiny-slider/tiny-slider.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/reey-font/stylesheet.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/owl-carousel/owl.carousel.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/owl-carousel/owl.theme.default.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/bxslider/jquery.bxslider.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/bootstrap-select/css/bootstrap-select.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/vegas/vegas.min.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/jquery-ui/jquery-ui.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/timepicker/timePicker.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/vendors/nice-select/nice-select.css' %} " rel="stylesheet" />
+        <!-- template styles -->
+        <link rel="stylesheet" href="{% static 'assets/css/meciy.css' %} " rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'assets/css/meciy-responsive.css' %} " rel="stylesheet" />
+</head>
+<body>
+  
+    <section class="team-three" style="padding: 0px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6" style="background-color: #013289;">
+                    <div class="why-choose-three__left">
+                        <div class="why-choose-three__img-box">                           
+                            <div class="why-choose-three__img-content-box">
+                                <div class="why-choose-three__img-content-icon-two">
+                                    <img src="assets/images/icon/why-choose-one-img-content-icon.png">
+                                </div>                                                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 d-flex align-items-center">
+                    <div class="why-choose-one__left">
+                        <div class="section-title text-left">
+                            <span class="section-title__tagline"> Non-Medical Companion Care
+                            </span>
+                            <h2 class="section-title__title">Bringing Comfort Straight to Your Doorstep</h2>
+                        </div>
+                        <!-- <h5 class="why-choose-one__text-1">Therapy With Dr. Jans Smith</h5> -->
+                        <p class="pt-0 pb-5">We focus on assisting with activities of daily living, both basic and
+                            instrumental. At the heart of our care is a commitment to creating a safe, comfortable, and
+                            supportive environment. Let us help you or your loved ones live with ease and dignity,
+                            adding happiness to their lives.
+                        </p>
+
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="text" name="name" placeholder="Name" required>
+                            <input type="email" name="email" placeholder="Email" required>
+                            <input type="password" name="password" placeholder="Password" required>
+                            <select name="group" required>
+                                <option value="">Select Role</option>
+                                {% for group in groups %}
+                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit">Register</button>
+                        </form>
+                        
+
+
+
+                        <div class="why-choose-one__points-box">
+                            <ul class="list-unstyled why-choose-one__points">
+                                <li>
+                                    <div class="icon">
+                                       
+                                    </div>
+                                    <div class="text">
+                                        <h5>Mobility Support
+                                        </h5>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                    </div>
+                                    <div class="text">
+                                        <h5>Companionship
+                                        </h5>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled why-choose-one__points why-choose-one__points--two">
+                                <li>
+                                    <div class="icon">
+                                       
+                                    </div>
+                                    <div class="text">
+                                        <h5> Daily Duties Help</h5>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">                                       
+                                    </div>
+                                    <div class="text">
+                                        <h5>Personal Care</h5>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="about-one__btn-box">
+                            <a href="contact.php" class="thm-btn about-one__btn"> Explore Non-Medical Care<i
+                                    class="icon-right-arrow1"></i></a>
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!--Google Map End-->
+
+    <script type="text/javascript"
+	src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script src="{% static 'assets/vendors/jquery/jquery-3.6.0.min.js' %} "></script>
+<script src="{% static 'assets/vendors/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jarallax/jarallax.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-ajaxchimp/jquery.ajaxchimp.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-appear/jquery.appear.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-circle-progress/jquery.circle-progress.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-magnific-popup/jquery.magnific-popup.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-validate/jquery.validate.min.js' %} "></script>
+<script src="{% static 'assets/vendors/nouislider/nouislider.min.js' %} "></script>
+<script src="{% static 'assets/vendors/odometer/odometer.min.js' %} "></script>
+<script src="{% static 'assets/vendors/swiper/swiper.min.js' %} "></script>
+<script src="{% static 'assets/vendors/tiny-slider/tiny-slider.min.js' %} "></script>
+<script src="{% static 'assets/vendors/wnumb/wNumb.min.js' %} "></script>
+<script src="{% static 'assets/vendors/wow/wow.js' %} "></script>
+<script src="{% static 'assets/vendors/isotope/isotope.js' %} "></script>
+<script src="{% static 'assets/vendors/countdown/countdown.min.js' %} "></script>
+<script src="{% static 'assets/vendors/owl-carousel/owl.carousel.min.js' %} "></script>
+<script src="{% static 'assets/vendors/bxslider/jquery.bxslider.min.js' %} "></script>
+<script src="{% static 'assets/vendors/bootstrap-select/js/bootstrap-select.min.js' %} "></script>
+<script src="{% static 'assets/vendors/vegas/vegas.min.js' %} "></script>
+<script src="{% static 'assets/vendors/jquery-ui/jquery-ui.js' %} "></script>
+<script src="{% static 'assets/vendors/timepicker/timePicker.js' %} "></script>
+<script src="{% static 'assets/vendors/circleType/jquery.circleType.js' %} "></script>
+<script src="{% static 'assets/vendors/circleType/jquery.lettering.min.js' %} "></script>
+<script src="{% static 'assets/vendors/sidebar-content/jquery-sidebar-content.js' %} "></script>
+<script src="{% static 'assets/vendors/tweenmax/TweenMax.min.js' %} "></script>
+<script src="{% static 'assets/vendors/nice-select/jquery.nice-select.min.js' %} "></script>
+
+
+
+
+<!-- template js -->
+<script src="{% static 'assets/js/meciy.js' %} "></script>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <style>
+  .error{color: #e74c3c;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 0;}
+</style>   
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.like-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const postId = this.getAttribute('data-post-id');
+                fetch("{% url 'like_post' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'post_id=' + postId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.likes !== undefined) {
+                        document.getElementById('like-count-' + postId).innerText = data.likes;
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function(e) {               
+        $("#contact_form").validate({ 
+            //ignore: [],  
+            rules: {
+                fullname: {required: true, minlength: 3 },
+                email: { required: true, email: true  },  
+                phone: {
+                required: true,               // Phone is required
+                minlength: 10,                // Example: Minimum length of 10 digits (adjust as needed)
+                digits: true                  // Ensure only digits are allowed
+                },   
+                subject: { required: true,minlength: 3  },   
+                message: { required: true,minlength: 3  }                    
+            },
+            messages: {
+                fullname: {
+                    required: "Please enter your full name.",
+                    minlength: "Your full name must be at least 3 characters long."
+                },
+                email: {
+                required: "Please enter your email address.",
+                email: "Please enter a valid email address.",  // Error message for invalid email format
+                },
+
+                phone: { 
+                    required: "Please enter your phone number.",
+                    minlength: "Your phone number must be at least 10 digits long.",
+                    digits: "Please enter a valid phone number with digits only."
+                }, 
+                subject: { required: "Please enter the subject."}, 
+                message: { required: "Please enter your message." }                     
+            },
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                event.preventDefault();
+                $('#udBtn').text('Please Wait...');          
+                document.getElementById('udBtn').setAttribute("disabled","disabled");  
+                
+                var formData = new FormData(form);  
+                $.ajax({
+                    url: "{% url 'contactus' %}",
+                    type : "POST",                       
+                    data : formData,
+                    processData : false,                        
+                    contentType:false,
+                    dataType : 'json',
+                    success: function(result) { 
+                        $('#udBtn').text('Save');              
+                        document.getElementById('udBtn').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){ 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                            title: result.title,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{ 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) { 
+                        $('#udBtn').text('Submit');
+                        document.getElementById('udBtn').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            type: "warning",
+                            text: error,          //"Something went wrong! Please try again! aaaaaaaaaaa",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+</script>

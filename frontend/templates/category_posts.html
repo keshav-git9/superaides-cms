@@ -1,0 +1,171 @@
+{% load static %}
+{% include 'layouts/header.html' %}
+<!-----{{dynamic_content}}-->
+{% load custom_filters %}
+    <section class="bg-image" style="background-image: url({{'/static/assets/images/blogs/banner.webp'}});">
+        <div class="overlay">
+            <div class="text-center text-content">
+                <div class="page-header__inner">
+                    <h2>{{ category.name }}</h2>
+                    <ul class="thm-breadcrumb list-unstyled">
+                        <li><a href="#">Home</a></li>
+                        <li><span>/</span></li>
+                        <li>{{ category.name }} Posts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 col-lg-7">
+                <div class="blog-page__left">           
+                    {% for post in page_obj %}
+                        <div class="blog-page__single">
+                            <div class="blog-page__img-box">
+                                <div class="blog-page__img">
+                                    {% if post.post_image %}
+                                        <img src="{{ post.post_image.url }}" alt="{{ post.title }}" >
+                                    {% else %}
+                                        <p>No image uploaded.</p>
+                                    {% endif %}                                    
+                                </div>
+                                 <div class="blog-page__date"><p>{{ post.published_at|date:"d" }}<br> {{ post.published_at|date:"F" }}</p>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled blog-page__meta">
+                               <!---- <li><a href="{% url 'post-detail' post.slug %}"><i class="fas fa-user-circle"></i> Jhon Albert</a></li>-->
+                                <li><a href="{% url 'post-detail' post.slug %}"><i class="fas fa-comments"></i> {{ post.comment_count }} Comment</a></li>
+                                <li><a class="like-button" data-post-id="{{ post.id }}" style="cursor: pointer;">
+                                    <i class="fas fa fa-thumbs-up"></i> <span id="like-count-{{ post.id }}">{{ post.likes }}</span> Like
+                                    </a>
+                                </li>
+                            </ul>
+                            <h3 class="blog-page__title-1"><a href="{% url 'post-detail' post.slug %}">{{ post.title }} </a></h3>
+                            <p class="blog-page__text-1">{{ post.contents |safe |truncatewords:250 }}</p>  
+
+                            <div class="blog-page__btn-box">
+                                <a href="{% url 'post-detail' post.slug %}" class="blog-page__btn">Read more<i
+                                        class="icon-right-arrow1"></i></a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>No posts found.</p>
+                    {% endfor %}
+                    
+
+                    <div class="blog-page__pagination">
+                    <ul class="pg-pagination list-unstyled">
+                        {% if page_obj.has_previous %}
+                            <li class="prev"><a href="?page=1">&laquo; First</a></li>
+                            <li><a href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+                        {% endif %}
+                    
+                        <li class="count">
+                            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                    
+                        {% if page_obj.has_next %}
+                            <li class="next"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            <li class="next"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-5">
+                <div class="sidebar">
+                    <div  class="sidebar__single sidebar__search">
+                        <form action="" method="post" class="sidebar__search-form">
+                            {% csrf_token %}
+                            <input type="search" name="search_key" value="{{ search_key }}" placeholder="Search...">
+                           
+                            <button type="submit"><i class="fa fa-search-plus" style="font-size:24px"></i></button>
+                        </form> 
+                    </div>
+                    <div class="sidebar__single sidebar__category">
+                        <div class="sidebar__title-box">
+                            <h3 class="sidebar__title">Category</h3>
+                            <ul>
+                               
+                            </ul>
+                        </div>
+                        <ul class="sidebar__category-list list-unstyled">
+                            {% for cat in categories %}
+                            <li><a href="{% url 'category-posts' cat.slug %}">{{ cat.name }} <span>({{ cat.post_count }})</span></a> </li>
+                            {% empty %}
+                                <li>No categories available.</li>
+                            {% endfor %}                            
+                        </ul>
+                    </div>
+                    <div class="sidebar__single sidebar__post">
+                        <div class="sidebar__title-box">
+                            <h3 class="sidebar__title">Recent Post</h3>
+                        </div>
+                         
+                        <ul class="sidebar__post-list list-unstyled">
+                            {% for repost in posts|slice:":3" %}
+                            <li>
+                                <!---<div class="sidebar__post-image">
+                                    <img src="assets/images/blog/blog-lp-1.jpg" alt="">
+                                </div>-->
+                                <h3 class="sidebar__post-title"><a href="{% url 'post-detail' repost.slug %}">{{ repost.title }}</a></h3></li>
+                            {% endfor %}                             
+                        </ul>
+                    </div>
+                    <!----<div class="sidebar__single sidebar__tag">
+                        <div class="sidebar__title-box">
+                            <h3 class="sidebar__title">Tags Cloud</h3>
+                        </div>   
+                        <div class="sidebar__tag-list">
+                            {% for tag in tags %}
+                            <a href="#">{{ tag.name }} ({{ tag.post_count }})</a>
+                            {% endfor %}  
+                            
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!--Google Map End-->
+    {% include 'layouts/footer.html' %}   
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <style>
+  .error{color: #e74c3c;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 0;}
+</style>   
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.like-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const postId = this.getAttribute('data-post-id');
+                fetch("{% url 'like_post' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'post_id=' + postId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.likes !== undefined) {
+                        document.getElementById('like-count-' + postId).innerText = data.likes;
+                    }
+                });
+            });
+        });
+    });
+</script>

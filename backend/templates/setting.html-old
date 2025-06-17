@@ -1,0 +1,906 @@
+
+{% extends 'layouts/headerapp.html' %}
+
+{% block content %}
+
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        {% include "layouts/sidebar-header.html" %}
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title">SETTING</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html"><i class="la la-home font-20"></i></a>
+                    </li>
+                    
+                </ol>
+            </div>            
+            <!---------------------->
+            <div class="ibox">
+                           
+                            <div class="ibox-body">
+                                <div class="clf">
+                                    <ul class="nav nav-tabs tabs-line-left col-md-2" >
+                                         <li class="nav-item">
+                                            <a class="nav-link active" href="#tab-9-0" data-toggle="tab">Logo and Favicon</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#tab-9-1" data-toggle="tab">Social Media Pages</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#tab-9-2" data-toggle="tab">Google Recaptcha</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#tab-9-3" data-toggle="tab">Google Analytic</a>
+                                        </li>
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="#tab-9-4" data-toggle="tab">Social Login</a>
+                                        </li>
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="#tab-9-5" data-toggle="tab">Facebook Pixel</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="tab-9-0">
+                                            <div class="row">                    
+                                                <div class="col-md-9">
+                                                    <div class="ibox">
+                                                        <div class="ibox-head">
+                                                            <div class="ibox-title"><Header>Logo and Favicon</Header> </div>                                                           
+                                                        </div>
+                                                        <div class="ibox-body">
+                                                            <form class="form-horizontal" id="addlogo_form" method="POST" enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Existing Logo Title</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.existing_logo_title}}" name="existing_logo_title" id="existing_logo_title" placeholder="Existing Logo Title">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Existing Logo</label>
+                                                                      <div class="col-sm-10"> 
+                                                                        <input class="form-control" type="file" name="existing_logo" id="existing_logo" placeholder="Existing Logo">
+                                                                        {% if data.existing_logo %}
+                                                                        <img src="{{data.existing_logo.url}}" alt="Logo" style="max-width: 40%;">
+                                                                        {% else %}
+                                                                            <p>No logo available</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>                                                                
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Footer Logo</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="file" name="footer_logo" id="footer_logo" placeholder="Footer Logo">
+                                                                        {% if data.footer_logo %}
+                                                                        <img src="{{data.footer_logo.url}}" alt="Logo" style="max-width: 40%;">
+                                                                        {% else %}
+                                                                            <p>No footer logo available</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Existing Favicon</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="file" name="existing_favicon" id="existing_favicon"placeholder="Existing Favicon">
+                                                                        {% if data.existing_favicon %}
+                                                                        <img src="{{data.existing_favicon.url}}" alt="Logo" style="max-width: 40%;">
+                                                                        {% else %}
+                                                                            <p>No favicon available</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>                                                                                                                              
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-10 ml-sm-auto">
+                                                                        <button class="btn btn-info" type="submit" id="udBtn">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                              
+                                        </div>
+                                        <div class="tab-pane" id="tab-9-1">
+                                            <div class="row">                    
+                                                <div class="col-md-9">
+                                                    <div class="ibox">
+                                                        <div class="ibox-head">
+                                                            <div class="ibox-title"><Header>Social Media Pages</Header> </div>                                                           
+                                                        </div>
+                                                        <div class="ibox-body">
+                                                            <form class="form-horizontal" id="socialmedia_form" method="POST" enctype="multipart/form-data">
+                                                                {% csrf_token %}                                                                
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Facebook</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.facebook_link}}" name="facebook_link" id="facebook_link" placeholder="Facebook Page Link">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Instagram</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.instagram_link}}" name="instagram_link" id="instagram_link" placeholder="Instagram Page Link">
+                                                                    </div>
+                                                                </div>    
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Twitter</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.twitter_link}}" name="twitter_link" id="twitter_link" placeholder="Twitter Page Link">
+                                                                    </div>
+                                                                </div>   
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Youtube</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.youtube_link}}" name="youtube_link" id="youtube_link" placeholder="Youtube Page Link">
+                                                                    </div>
+                                                                </div>                                                                                                         
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-10 ml-sm-auto">
+                                                                        <button class="btn btn-info" type="submit" id="udBtn1">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            
+                                          
+                                        </div>
+                                        
+                                        <div class="tab-pane"  id="tab-9-2">
+                                            <div class="row">                    
+                                                <div class="col-md-9">
+                                                    <div class="ibox">
+                                                        <div class="ibox-head">
+                                                            <div class="ibox-title"><Header>Google Recaptcha</Header> </div>                                                           
+                                                        </div>
+                                                        <div class="ibox-body">
+                                                            <form class="form-horizontal" id="recaptcha_form" method="POST" enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Allow Recaptcha </label> 
+                                                                    <div class="col-sm-10">                                                                       
+                                                                        <select name="recapcha_allow" id="recapcha_allow" class="form-control">
+                                                                            <option value="1" {% if data.recapcha_allow == '1' %}selected{% endif %} >Enable</option>
+                                                                            <option value="0" {% if data.recapcha_allow == '0' %}selected{% endif %} >Disable</option>
+                                                                        </select>    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Captcha Site Key</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.site_key}}" name="site_key" id="site_key" placeholder="Captcha Site Key">
+                                                                    </div>
+                                                                </div>                                                                
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Captcha Secret Key</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.secret_key}}" name="secret_key" id="secret_key" placeholder="Captcha Secret Key">
+                                                                    </div>
+                                                                </div>                                                                                                                   
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-10 ml-sm-auto">
+                                                                        <button class="btn btn-info" type="submit" id="udBtn2">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        
+                                        <div class="tab-pane fade" id="tab-9-3">
+                                            <div class="row">                    
+                                                <div class="col-md-9">
+                                                    <div class="ibox">
+                                                        <div class="ibox-head">
+                                                            <div class="ibox-title"><Header>Google Analytic</Header> </div>                                                           
+                                                        </div>
+                                                        <div class="ibox-body">
+                                                            <form class="form-horizontal" id="analytic_form" method="POST" enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Allow Google Analytic</label>
+                                                                    <div class="col-sm-10">                                                                       
+                                                                        <select name="analytic_allow" id="analytic_allow" class="form-control">
+                                                                            <option value="1" {% if data.analytic_allow == '1' %}selected{% endif %} >Enable</option>
+                                                                            <option value="0" {% if data.analytic_allow == '0' %}selected{% endif %}>Disable</option>
+                                                                        </select>    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Analytic Tracking Id</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.analytic_id}}" name="analytic_id" id="analytic_id" placeholder="Analytic Tracking Id">
+                                                                    </div>
+                                                                </div>                                                                                                        
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-10 ml-sm-auto">
+                                                                        <button class="btn btn-info" type="submit" id="udBtn3">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                         <div class="tab-pane fade" id="tab-9-4">
+                                            <div class="row">                    
+                                                <div class="col-md-9">
+                                                    <div class="ibox">
+                                                        <div class="ibox-head">
+                                                            <div class="ibox-title"><Header>Social Login</Header> </div>                                                           
+                                                        </div>
+                                                        <div class="ibox-body">
+                                                            <form class="form-horizontal" id="sociallogin_form" method="POST" enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Allow Login with Gmail</label>
+                                                                    <div class="col-sm-10">                                                                       
+                                                                        <select name="social_allow" id="social_allow" class="form-control">
+                                                                            <option value="1" {% if data.social_allow == '1' %}selected{% endif %}>Enable</option>
+                                                                            <option value="0" {% if data.social_allow == '0' %}selected{% endif %}>Disable</option>
+                                                                        </select>    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Gmail Client Id</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.gmail_client_id}}" name="gmail_client_id" id="gmail_client_id" placeholder="Gmail Client Id">
+                                                                    </div>
+                                                                </div> 
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Gmail Secret Id</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.gmail_secret_id}}"  name="gmail_secret_id" id="gmail_secret_id" placeholder="Gmail Secret Id">
+                                                                    </div>
+                                                                </div>  
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Gmail Redirect Url</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.gmail_redirect_url}}" name="gmail_redirect_url" id="gmail_redirect_url" placeholder="Gmail Redirect Url">
+                                                                    </div>
+                                                                </div>                                                                                                       
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-10 ml-sm-auto">
+                                                                        <button class="btn btn-info" type="submit" id="udBtn4">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                         <div class="tab-pane fade" id="tab-9-5">
+                                            <div class="row">                    
+                                                <div class="col-md-9">
+                                                    <div class="ibox">
+                                                        <div class="ibox-head">
+                                                            <div class="ibox-title"><Header> Facebook Pixel</Header> </div>                                                           
+                                                        </div>
+                                                        <div class="ibox-body">
+                                                            <form class="form-horizontal" id="fpixel_form" method="POST" enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-2 col-form-label">Allow Facebook Pixel </label>
+                                                                    <div class="col-sm-10">                                                                       
+                                                                        <select name="fpixel_allow" id="fpixel_allow" class="form-control">
+                                                                            <option value="1" {% if data.fpixel_allow == '1' %}selected{% endif %} >Enable</option>
+                                                                            <option value="0" {% if data.fpixel_allow == '0' %}selected{% endif %} >Disable</option>
+                                                                        </select>    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row" >
+                                                                    <label class="col-sm-2 col-form-label">Facebook App Id</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input class="form-control" type="text" value="{{data.fapp_id}}" name="fapp_id" id="fapp_id" placeholder="Analytic Tracking Id">
+                                                                    </div>
+                                                                </div>                                                                                                        
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-10 ml-sm-auto">
+                                                                        <button class="btn btn-info" type="submit" id="udBtn5">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            <!-- END PAGE CONTENT-->
+           {% include "layouts/adminfooter.html" %}
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->      
+<script>
+    $(document).ready(function() {
+        $("#addlogo_form").validate({
+            /*rules: {
+                existing_logo_title: {required: true, minlength: 3 },
+                existing_logo: { required: true,minlength: 3  },
+                footer_logo: {  required: true, minlength: 3  },
+                existing_favicon: { required: true,minlength: 3
+                }
+            },
+            messages: {
+                existing_logo_title: {
+                    required: "Please enter Existing Logo Title.",
+                    minlength: "Your name must be at least 3 characters long."
+                },
+                existing_logo: { required: "Please choose Existing Logo." },                
+                footer_logo: { required: "Please choose Footer Logo." },
+                existing_favicon: { required: "Please choose Existing Favicon Logo."}
+            },*/
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                $('#udBtn').text('Please Wait...');          
+                document.getElementById('udBtn').setAttribute("disabled","disabled");  
+                $.ajax({
+                    url: "{% url 'add_logo' %}",
+                    type : "POST",
+                    //data: $(form).serialize(),
+                    data : new FormData(form),
+                    processData : false,
+                    dataType : 'json',
+                    contentType:false,
+                    success: function(result) {
+                        $('#udBtn').text('Save');              
+                        document.getElementById('udBtn').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                            title: result.title,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#udBtn').text('Submit');
+                        document.getElementById('udBtn').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            type: "warning",
+                            text: "Something went wrong! Please try again!",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+    </script>
+
+
+
+<script>
+    $(document).ready(function() {
+        $("#socialmedia_form").validate({
+            rules: {
+                facebook_link: {required: true, minlength: 3 },
+                instagram_link: { required: true,minlength: 3 },
+                twitter_link: {  required: true, minlength: 3 },
+                youtube_link: { required: true,minlength: 3 },
+            },
+            messages: {
+                facebook_link: {
+                    required: "Please enter Existing Logo Title.",
+                    minlength: "Your name must be at least 3 characters long."
+                },
+                instagram_link: { required: "Please choose Existing Logo." },                
+                twitter_link: { required: "Please choose Footer Logo." },
+                youtube_link: { required: "Please choose Existing Favicon Logo."}
+            },
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                $('#udBtn1').text('Please Wait...');          
+                document.getElementById('udBtn1').setAttribute("disabled","disabled");  
+                $.ajax({
+                    url: "{% url 'add_logo' %}",
+                    type : "POST",
+                    //data: $(form).serialize(),
+                    data : new FormData(form),
+                    processData : false,
+                    dataType : 'json',
+                    contentType:false,
+                    success: function(result) {
+                        $('#udBtn1').text('Save');              
+                        document.getElementById('udBtn1').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){
+                            $('#udBtn1').text('Submit');
+                            document.getElementById('udBtn1').removeAttribute("disabled");
+                            swal.fire({
+                            title: result.error,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{
+                            $('#udBtn1').text('Submit');
+                            document.getElementById('udBtn1').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            //title: result.errors,
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#udBtn1').text('Submit');
+                        document.getElementById('udBtn1').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            //title: error,
+                            type: "warning",
+                            text: "Something went wrong! Please try again!",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+    </script>
+
+
+<script>
+    $(document).ready(function() {
+        $("#recaptcha_form").validate({
+            rules: {
+                recapcha_allow: {required: true },
+                site_key: { required: true,minlength: 3 },
+                secret_key: {  required: true, minlength: 3 }                
+            },
+            messages: {
+                recapcha_allow: { required: "Please choose recapcha allow." },
+                site_key: { required: "Please enter site key." },                
+                secret_key: { required: "Please enter secret key." }               
+            },
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                $('#udBtn2').text('Please Wait...');          
+                document.getElementById('udBtn2').setAttribute("disabled","disabled");  
+                $.ajax({
+                    url: "{% url 'add_logo' %}",
+                    type : "POST",
+                    //data: $(form).serialize(),
+                    data : new FormData(form),
+                    processData : false,
+                    dataType : 'json',
+                    contentType:false,
+                    success: function(result) {
+                        $('#udBtn2').text('Save');              
+                        document.getElementById('udBtn2').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){
+                            $('#udBtn2').text('Submit');
+                            document.getElementById('udBtn2').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",    
+                            //title: result.error,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{
+                            $('#udBtn2').text('Submit');
+                            document.getElementById('udBtn2').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            //title: result.errors,
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#udBtn2').text('Submit');
+                        document.getElementById('udBtn2').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            //title: error,
+                            type: "warning",
+                            text: "Something went wrong! Please try again!",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+    </script>
+
+<script>
+    $(document).ready(function() {
+        $("#analytic_form").validate({
+            rules: {
+                analytic_allow: {required: true },
+                analytic_id: { required: true,minlength: 3 },                          
+            },
+            messages: {
+                analytic_allow: { required: "Please choose Allow Google Analytic." },
+                analytic_id: { required: "Please enter Analytic Tracking Id." }, 
+            },
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                $('#udBtn3').text('Please Wait...');          
+                document.getElementById('udBtn3').setAttribute("disabled","disabled");  
+                $.ajax({
+                    url: "{% url 'add_logo' %}",
+                    type : "POST",
+                    //data: $(form).serialize(),
+                    data : new FormData(form),
+                    processData : false,
+                    dataType : 'json',
+                    contentType:false,
+                    success: function(result) {
+                        $('#udBtn3').text('Save');              
+                        document.getElementById('udBtn3').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){
+                            $('#udBtn3').text('Submit');
+                            document.getElementById('udBtn3').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",    
+                            //title: result.error,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{
+                            $('#udBtn3').text('Submit');
+                            document.getElementById('udBtn3').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            //title: result.errors,
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#udBtn3').text('Submit');
+                        document.getElementById('udBtn3').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            //title: error,
+                            type: "warning",
+                            text: "Something went wrong! Please try again!",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+    </script>
+<script>
+    $(document).ready(function() {
+        $("#sociallogin_form").validate({
+            rules: {
+                social_allow: {required: true },
+                gmail_client_id: { required: true,minlength: 3 },
+                gmail_secret_id: {  required: true, minlength: 3 },     
+                gmail_redirect_url: {  required: true, minlength: 3 }             
+            },
+            messages: {
+                social_allow: { required: "Please choose Allow Login with Gmail." },
+                gmail_client_id: { required: "Please enter Gmail Client Id." },                
+                gmail_secret_id: { required: "Please enter Gmail Secret Id." },  
+                gmail_redirect_url: { required: "Please enter Gmail Redirect Url." }               
+            },
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                $('#udBtn4').text('Please Wait...');          
+                document.getElementById('udBtn4').setAttribute("disabled","disabled");  
+                $.ajax({
+                    url: "{% url 'add_logo' %}",
+                    type : "POST",
+                    //data: $(form).serialize(),
+                    data : new FormData(form),
+                    processData : false,
+                    dataType : 'json',
+                    contentType:false,
+                    success: function(result) {
+                        $('#udBtn4').text('Save');              
+                        document.getElementById('udBtn4').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){
+                            $('#udBtn4').text('Submit');
+                            document.getElementById('udBtn4').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            //title: result.error,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{
+                            $('#udBtn4').text('Submit');
+                            document.getElementById('udBtn4').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            //title: result.errors,
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#udBtn4').text('Submit');
+                        document.getElementById('udBtn4').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            //title: error,
+                            type: "warning",
+                            text: "Something went wrong! Please try again!",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+    </script>
+
+<script>
+    $(document).ready(function() {
+        $("#fpixel_form").validate({
+            rules: {
+                fpixel_allow: {required: true },
+                fapp_id: { required: true,minlength: 3 },                          
+            },
+            messages: {
+                fpixel_allow: { required: "Please choose Allow Facebook Pixel." },
+                fapp_id: { required: "Please enter Facebook App Id." }, 
+            },
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                $('#udBtn5').text('Please Wait...');          
+                document.getElementById('udBtn5').setAttribute("disabled","disabled");  
+                $.ajax({
+                    url: "{% url 'add_logo' %}",
+                    type : "POST",
+                    //data: $(form).serialize(),
+                    data : new FormData(form),
+                    processData : false,
+                    dataType : 'json',
+                    contentType:false,
+                    success: function(result) {
+                        $('#udBtn5').text('Save');              
+                        document.getElementById('udBtn5').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){
+                            $('#udBtn5').text('Submit');
+                            document.getElementById('udBtn5').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            //title: result.error,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{
+                            $('#udBtn5').text('Submit');
+                            document.getElementById('udBtn5').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            //title: result.errors,
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#udBtn5').text('Submit');
+                        document.getElementById('udBtn5').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            //title: error,
+                            type: "warning",
+                            text: "Something went wrong! Please try again!",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+    </script>
+
+
+
+
+    <!-- END THEME CONFIG PANEL--> 
+    <!-- CORE PLUGINS-->
+   {% endblock %}
+    <!-- PAGE LEVEL PLUGINS-->
+    <!-- CORE SCRIPTS-->
+    

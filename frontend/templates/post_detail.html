@@ -1,0 +1,303 @@
+{% load static %}
+{% include 'layouts/header.html' %}
+<!-----{{dynamic_content}}-->
+{% load custom_filters %}
+<style>
+    .bg-image_post {   
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 400px;
+    }
+</style>
+
+    <section class="bg-image_post" {% if post.post_header_image %} style="background-image: url({{post.post_header_image.url}});" {% endif %}>
+        <div class="overlay">
+            <div class="text-center text-content">
+                <div class="page-header__inner">
+                    <h2>{{ post.title }}</h2>
+                    <ul class="thm-breadcrumb list-unstyled">
+                        <li><a href="#">Home</a></li>
+                        <li><span>/</span></li>
+                        <li>{{ post.title }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 col-lg-7">
+                <div class="blog-page__left">  
+                    <div class="blog-page__single">
+                        <div class="blog-page__img-box">
+                            <div class="blog-page__img">
+                                {% if post.post_image %}
+                                    <img src="{{ post.post_image.url }}" alt="{{ post.title }}" >
+                                {% else %}
+                                    <p>No image uploaded.</p>
+                                {% endif %}                                    
+                            </div>
+                             <div class="blog-page__date"><p>{{ post.published_at|date:"d" }}<br> {{ post.published_at|date:"F" }}</p>
+                                </div>
+                        </div>
+                        <ul class="list-unstyled blog-page__meta">
+                            <!---<li><a href="{% url 'post-detail' post.slug %}"><i class="fas fa-user-circle"></i> Jhon Albert</a></li>-->
+                            <li><a href="{% url 'post-detail' post.slug %}"><i class="fas fa-comments"></i> {{ comments.count }} Comment</a></li>
+                            <li><a class="like-button" data-post-id="{{ post.id }}" style="cursor: pointer;">
+                                <i class="fas fa fa-thumbs-up"></i> <span id="like-count-{{ post.id }}">{{ post.likes }}</span> Like
+                                </a>
+                            </li>
+                        </ul>
+                        <h3 class="blog-page__title-1"><a href="{% url 'post-detail' post.slug %}">{{ post.title }} </a></h3>
+                        <p class="blog-page__text-1">{{ post.contents |safe }}</p>                          
+                    </div>  
+                    
+                   
+                    <hr>
+                    <h3>Comments ({{ comments.count }})</h3>
+                    {% for comment in comments %}
+                        <div>
+                            <strong>{{ comment.name }}</strong> - <em>{{ comment.created_at }}</em><br>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    {% empty %}
+                        <p>No comments yet.</p>
+                    {% endfor %}
+
+                    <hr>
+                    <h3 class="mb-2">Leave a Comment</h3>
+                    <form method="post">
+                        {% csrf_token %}  
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 mb-2">
+                                <div class="form-group">                                  
+                                    <input type="text" name="name" class="form-control" id="id_name" placeholder="Full name" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="form-group">                                   
+                                    <input type="email" name="email" class="form-control" id="id_email" placeholder="Email Address" required>
+                                </div>
+                            </div>                        
+                        </div>
+                    
+                        <div class="form-group mb-2">                           
+                            <textarea name="content" class="form-control" id="id_content" rows="5" placeholder="Comment" required></textarea>
+                        </div>                    
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>                                         
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-5">
+                <div class="sidebar">
+                    <div  class="sidebar__single sidebar__search">
+                        <form action="" method="post" class="sidebar__search-form">
+                            {% csrf_token %}
+                            <input type="search" name="search_key" value="{{ search_key }}" placeholder="Search...">
+                           
+                            <button type="submit"><i class="fa fa-search-plus" style="font-size:24px"></i></button>
+                        </form> 
+                    </div>
+                    <div class="sidebar__single sidebar__category">
+                        <div class="sidebar__title-box">
+                            <h3 class="sidebar__title">Category</h3>
+                            <ul>
+                               
+                            </ul>
+                        </div>
+                        <ul class="sidebar__category-list list-unstyled">
+                            {% for cat in categories %}
+                            <li><a href="{% url 'category-posts' cat.slug %}">{{ cat.name }} <span>({{ cat.post_count }})</span></a> </li>
+                            {% empty %}
+                                <li>No categories available.</li>
+                            {% endfor %}                            
+                        </ul>
+                    </div>
+                    <div class="sidebar__single sidebar__post">
+                        <div class="sidebar__title-box">
+                            <h3 class="sidebar__title">Recent Post</h3>
+                        </div>
+                         
+                        <ul class="sidebar__post-list list-unstyled">
+                            {% for repost in posts|slice:":3" %}
+                            <li>
+                                <!---<div class="sidebar__post-image">
+                                    <img src="assets/images/blog/blog-lp-1.jpg" alt="">
+                                </div>-->
+                                <h3 class="sidebar__post-title"><a href="{% url 'post-detail' repost.slug %}">{{ repost.title }}</a></h3></li>
+                            {% endfor %}                             
+                        </ul>
+                    </div>
+                    <!----<div class="sidebar__single sidebar__tag">
+                        <div class="sidebar__title-box">
+                            <h3 class="sidebar__title">Tags Cloud</h3>
+                        </div>   
+                        <div class="sidebar__tag-list">
+                            {% for tag in tags %}
+                            <a href="#">{{ tag.name }} ({{ tag.post_count }})</a>
+                            {% endfor %}  
+                            
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!--Google Map End-->
+    {% include 'layouts/footer.html' %}   
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <style>
+  .error{color: #e74c3c;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 0;}
+</style>   
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.like-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const postId = this.getAttribute('data-post-id');
+                fetch("{% url 'like_post' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'post_id=' + postId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.likes !== undefined) {
+                        document.getElementById('like-count-' + postId).innerText = data.likes;
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function(e) {               
+        $("#contact_form").validate({ 
+            //ignore: [],  
+            rules: {
+                fullname: {required: true, minlength: 3 },
+                email: { required: true, email: true  },  
+                phone: {
+                required: true,               // Phone is required
+                minlength: 10,                // Example: Minimum length of 10 digits (adjust as needed)
+                digits: true                  // Ensure only digits are allowed
+                },   
+                subject: { required: true,minlength: 3  },   
+                message: { required: true,minlength: 3  }                    
+            },
+            messages: {
+                fullname: {
+                    required: "Please enter your full name.",
+                    minlength: "Your full name must be at least 3 characters long."
+                },
+                email: {
+                required: "Please enter your email address.",
+                email: "Please enter a valid email address.",  // Error message for invalid email format
+                },
+
+                phone: { 
+                    required: "Please enter your phone number.",
+                    minlength: "Your phone number must be at least 10 digits long.",
+                    digits: "Please enter a valid phone number with digits only."
+                }, 
+                subject: { required: "Please enter the subject."}, 
+                message: { required: "Please enter your message." }                     
+            },
+            errorClass: "help-block error",
+            highlight: function(e) {
+                $(e).closest(".form-group.row").addClass("has-error")
+            },
+            unhighlight: function(e) {
+                $(e).closest(".form-group.row").removeClass("has-error")
+            },
+            submitHandler: function(form) {
+                // AJAX form submission
+                event.preventDefault();
+                $('#udBtn').text('Please Wait...');          
+                document.getElementById('udBtn').setAttribute("disabled","disabled");  
+                
+                var formData = new FormData(form);  
+                $.ajax({
+                    url: "{% url 'contactus' %}",
+                    type : "POST",                       
+                    data : formData,
+                    processData : false,                        
+                    contentType:false,
+                    dataType : 'json',
+                    success: function(result) { 
+                        $('#udBtn').text('Save');              
+                        document.getElementById('udBtn').removeAttribute("disabled");  
+                        //Handle the success response from Django
+                        if(result.response == 'success'){
+                            swal.fire({
+                                title: result.title,
+                                type: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }).then(function(){ location.reload(); });
+            
+                        }else if(result.response == 'Not Saved'){ 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                            title: result.title,
+                            type: result.icon,
+                            text: result.msg,
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                            .then(function(){ location.reload();});
+            
+                        }else{ 
+                            $('#udBtn').text('Submit');
+                            document.getElementById('udBtn').removeAttribute("disabled");
+                            swal.fire({
+                            title: "Error",
+                            type: "warning",
+                            text: "Something went wrong! Please try again",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) { 
+                        $('#udBtn').text('Submit');
+                        document.getElementById('udBtn').removeAttribute("disabled");
+                        swal.fire({
+                            title: "Error",
+                            type: "warning",
+                            text: error,          //"Something went wrong! Please try again! aaaaaaaaaaa",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                            });
+                            }
+                });
+                return false; // Prevent regular form submission
+            }
+        });
+    });
+</script>

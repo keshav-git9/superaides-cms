@@ -1,0 +1,41 @@
+{% load static %}
+{% include 'layouts/header.html' %}
+
+<!-----{{dynamic_content}}-->
+{% load custom_filters %}
+ 
+<style> {{page_content.css}} </style>
+<script >{{page_content.js}} </script>
+
+<section class="bg-image mission" {% if page_content.page_header_image %} style="background-image: url({{page_content.page_header_image.url}});" {% else %} '' {% endif %}>
+	<div class="overlay">
+		<div class="text-center text-content">
+			<div class="page-header__inner">
+				<h2>{{page_content.code}}</h2>
+				<ul class="thm-breadcrumb list-unstyled">
+					<li><a href="{{ request.scheme }}://{{ request.get_host }}/">Home</a></li>
+					<li><span>/</span></li>
+					<li>{{page_content.title}}</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+	<!--About Four End-->
+	<!--Feature Two Start-->
+	<section class="pricing-one">
+		<div class="container">
+	 {{ page_content.contents|safe }} 
+	 </div>
+</section>
+	<!---{{ html_data.headercontent | replace_code | safe }}-->
+	<!--Why Choose One End-->
+
+<!---	<div class="contact-section">
+		{{ html_data.footer_top |replace_code|safe }}-->
+
+	{% include 'layouts/footer.html' %}   
+
+</body>
+</html>

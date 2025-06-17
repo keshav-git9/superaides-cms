@@ -1,0 +1,568 @@
+{% load static %}
+{% include 'layouts/header.html' %}
+
+<!-----{{dynamic_content}}-->
+{% load custom_filters %}
+
+<script >{{page_content.js}} </script>
+
+<section class="bg-image mission" {% if page_content.page_header_image %} style="background-image: url({{page_content.page_header_image.url}});" {% else %} '' {% endif %}>
+	<div class="overlay">
+		<div class="text-center text-content">
+			<div class="page-header__inner">
+				<h2>{{page_content.code}}</h2>
+				<ul class="thm-breadcrumb list-unstyled">
+					<li><a href="{{ request.scheme }}://{{ request.get_host }}/">Home</a></li>
+					<li><span>/</span></li>
+					<li>{{page_content.title}}</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+	<!--About Four End-->
+	<!--Feature Two Start-->
+	<section class="pricing-one">
+		<div class="container">
+	 <!---=========================================================================---->
+{{ page_content.contents|safe }} 
+
+{% if request.path == '/pricing-and-availability/' %}
+<section class="about-one">
+    <div class="container">
+        <div class="content-area">
+            <div class="sidebar">
+                <ul class="tabs">
+                    <li class="tab-item active" data-tab="loudoun">Loudoun County</li>
+                    <li class="tab-item" data-tab="fairfax">Fairfax County</li>
+                </ul>
+            </div>
+            <form id="loudoun-form" >
+													 {% csrf_token %}
+																		<div class="tab-content active" id="loudoun">
+																				<div class="map-container">
+																										<h3 class="section-title__title mb-3">Loudoun County, Virginia</h3>
+																										<div id="map">&nbsp;</div>
+																						</div>
+																						<div class="location-selector">
+																										<div class="select-location">Select Your Location</div>
+																											<div class="dropdown-container">
+																															<input class="zip-input" name="loudounzip" id="loudoun-zip-input" placeholder="Type or select a location" type="text" value=""/>
+																															<ul class="suggestions-list" id="loudoun-suggestions"></ul>
+																											</div>
+																											<div id="available" style="display: none;">
+																												<p style="color: #842029 !important;font-size: medium !important;line-height: 25px;">“Hooray! We have companion care providers in your area. Would you like to schedule a visit?”</p>
+																													<div class="about-one__btn-box">
+																														<a class="thm-btn about-one__btn" href="https://smartcare.superaides.com/" style="padding: 5px 15px;margin-left: 50px;" target="_blank">Talk to an Expert</a>
+																													</div>																							
+																											</div>
+																											<div id="notavailable" style="display :none">
+																												 <p style="color: #842029 !important;font-size: medium !important;line-height: 25px;">“We are not yet available in your area. Please provide your email and we will keep you informed when we are available.”</p>
+																											
+																											<div class="row" style="margin-top: 20px;">
+                                <div class="col-xl-12 col-lg-6">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="text" placeholder="Full name" name="name" id="name" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-6">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="email" placeholder="Email Address" name="email" id="email" required>
+                                    </div>
+                                </div>																												
+                                <div class="col-xl-12">                                   
+                                    <div class="contact-page-form__btn-box" style="margin-top: 20px;">
+                                        <button type="submit" id="udBtn" class="thm-btn contact-page-form__btn" style="padding: 5px 15px;margin-left: 70px;">Notify Me
+                                            <span class="icon-plus"></span></button>
+                                    </div>
+                                </div>                            
+                            </div>				
+																											</div>
+																						</div>
+																			</div>
+												</form>	
+												
+												 <form id="fairfax-form">
+												  {% csrf_token %}
+                <div class="tab-content" id="fairfax">
+																			<div class="map-container">
+																							<h3 class="section-title__title mb-3">Fairfax County, Virginia</h3>
+																							<div id="map2">&nbsp;</div>
+																			</div>
+
+																			<div class="location-selector">
+																							<div class="select-location">Select Your Location</div>
+																							<div class="dropdown-container">
+																											<input class="zip-input" name="fairfaxzip" id="fairfax-zip-input" placeholder="Type or select a location" type="text" />
+																											<ul class="suggestions-list" id="fairfax-suggestions">
+																											</ul>
+																							</div>
+																							<div id="available2" style="display: none;">
+																								<p style="color: #842029 !important;font-size: medium !important;line-height: 25px;">“Hooray! We have companion care providers in your area. Would you like to schedule a visit?”</p>
+																							  <div class="about-one__btn-box">
+																										<a class="thm-btn about-one__btn" href="https://smartcare.superaides.com/" style="padding: 5px 15px;margin-left: 50px;" target="_blank">Talk to an Expert</a>
+																									</div>																							
+																						</div>
+
+																						<div id="notavailable2" style="display :none">
+																												 <p style="color: #842029 !important;font-size: medium !important;line-height: 25px;">“We are not yet available in your area. Please provide your email and we will keep you informed when we are available.”</p>
+																											
+																											<div class="row" style="margin-top: 20px;">
+                                <div class="col-xl-12 col-lg-6">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="text" placeholder="Full name" name="name" id="name" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-6">
+                                    <div class="contact-page-form__input-box">
+                                        <input type="email" placeholder="Email Address" name="email" id="email" required>
+                                    </div>
+                                </div>																												
+                                <div class="col-xl-12">                                   
+                                    <div class="contact-page-form__btn-box" style="margin-top: 20px;">
+                                        <button type="submit" id="udBtn" class="thm-btn contact-page-form__btn" style="padding: 5px 15px;margin-left: 70px;">Notify Me
+                                            <span class="icon-plus"></span></button>
+                                    </div>
+                                </div>                            
+                            </div>				
+																											</div>
+																			</div>
+                </div>
+												</form>					
+        </div>
+    </div>
+</section>
+<section class="mb-5">
+    <div class="container">
+        <div class="row d-flex align-items-center">
+            <div class="col-xl-12">
+                <div class="about-two__right text-center">
+                    <div class="coverage">
+                        <p class="coverage-para new">Care that fits your life&mdash;right when you need it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+		// code written to hide the message and button . here only we need to show the form
+																								jQuery( document ).ready(function() {
+																									//alert('page loaded');																								
+																									})
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabItems = document.querySelectorAll('.tab-item');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    const tabId = this.getAttribute('data-tab');
+
+                    tabItems.forEach(tab => tab.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+
+                    window.dispatchEvent(new Event('resize'));
+                });
+            });
+        });
+
+        // Get unique zip codes and sort them
+        function getUniqueZipCodes(locations) {
+            const uniqueZips = new Set();
+            locations.forEach(location => {
+                uniqueZips.add(location.zip + " - " + location.city);
+            });
+            return Array.from(uniqueZips).sort();
+        }
+
+        // Populate suggestions list
+        function populateSuggestions(inputId, suggestionsId, options, markers, map, defaultView) {
+            const input = document.getElementById(inputId);
+            const suggestionsList = document.getElementById(suggestionsId);
+
+            function updateSuggestions(value) {
+                suggestionsList.innerHTML = '';
+                const filteredOptions = value
+                    ? options.filter(opt => opt.toLowerCase().includes(value.toLowerCase()))
+                    : options;
+                filteredOptions.forEach(opt => {
+                    const li = document.createElement('li');
+                    li.className = 'suggestion-item';
+                    li.textContent = opt;
+                    li.addEventListener('click', () => {
+                        input.value = opt;
+                        suggestionsList.classList.remove('active');
+                        if (markers[opt]) { //click event happning from talk to an experts
+																									//alert('we are here');
+                            const coords = markers[opt][0].getLatLng();																												
+                            map.setView(coords, 13);
+																											//	alert(coords);
+                            markers[opt][0].openPopup();																																																	
+																												//$('#available').show();		
+                        }																	
+                    });
+                    suggestionsList.appendChild(li);
+                });
+                suggestionsList.classList.toggle('active', filteredOptions.length > 0);
+            }
+
+            input.addEventListener('input', () => {
+                updateSuggestions(input.value);
+                map.setView(defaultView[0], defaultView[1]);
+                if (markers[input.value]) {
+                    const coords = markers[input.value][0].getLatLng();
+                    map.setView(coords, 13);
+                    markers[input.value][0].openPopup();
+																				
+                }
+            });
+
+            input.addEventListener('focus', () => updateSuggestions(input.value));
+            // Close suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !suggestionsList.contains(e.target)) {
+                    suggestionsList.classList.remove('active');																					
+                }
+            });
+        }
+
+        // Initialize maps
+        // Loudoun County Map
+        var loudounMap = L.map('map').setView([39.1, -77.6], 10);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(loudounMap);
+
+        var loudounLocations = [
+            { zip: "20105", city: "Aldie", coords: [38.946, -77.641] },
+            { zip: "20107", city: "Arcola", coords: [38.937, -77.536] },
+            { zip: "20117", city: "Middleburg", coords: [38.968, -77.738] },
+            { zip: "20118", city: "Middleburg", coords: [38.968, -77.738] },
+            { zip: "20129", city: "Paeonian Springs", coords: [39.144, -77.592] },
+            { zip: "20131", city: "Philomont", coords: [39.033, -77.716] },
+            { zip: "20132", city: "Purcellville", coords: [39.136, -77.713] },
+            { zip: "20134", city: "Hillsboro", coords: [39.195, -77.727] },
+            { zip: "20134", city: "Purcellville", coords: [39.13444, -77.71111] },
+            { zip: "20132", city: "Purcellville", coords: [39.1740, -77.7325] },
+            { zip: "20141", city: "Round Hill", coords: [39.134, -77.767] },
+            { zip: "20142", city: "Round Hill", coords: [39.1307, -77.7747] },
+            { zip: "20146", city: "Ashburn", coords: [39.043, -77.487] },
+            { zip: "20147", city: "Ashburn", coords: [39.0437, -77.4875] },
+            { zip: "20148", city: "Ashburn", coords: [39.0015, -77.5156] },
+            { zip: "20148", city: "Brambleton", coords: [38.983, -77.536] },
+            { zip: "20152", city: "South Riding", coords: [38.919, -77.503] },
+            { zip: "20158", city: "Hamilton", coords: [39.134, -77.664] },
+            { zip: "20159", city: "Hamilton", coords: [39.133889, -77.664151] },
+            { zip: "20160", city: "Purcellville", coords: [39.136, -77.713] },
+            { zip: "20163", city: "Sterling", coords: [39.006, -77.429] },
+            { zip: "20164", city: "Sterling", coords: [39.018, -77.376] },
+            { zip: "20165", city: "Sterling", coords: [39.045, -77.375] },
+            { zip: "20166", city: "Sterling", coords: [38.99, -77.47] },
+            { zip: "20167", city: "Sterling", coords: [39.0067, -77.4291] },
+            { zip: "20166", city: "Dulles", coords: [38.944, -77.447] },
+            { zip: "20175", city: "Leesburg", coords: [39.086, -77.558] },
+            { zip: "20176", city: "Leesburg", coords: [39.1821, -77.5359] },
+            { zip: "20177", city: "Leesburg", coords: [39.1157, -77.5636] },
+            { zip: "20178", city: "Leesburg", coords: [39.1157, -77.5636] },
+            { zip: "20197", city: "Waterford", coords: [39.189, -77.608] },
+            { zip: "20165", city: "Potomac Falls", coords: [39.0501, -77.4008] },
+            { zip: "20160", city: "Lincoln", coords: [39.1153, -77.6916] },
+            { zip: "20180", city: "Lovettsville", coords: [39.2726, -77.6367] },
+            { zip: "20166", city: "Dulles", coords: [38.9692, -77.4632] },
+            { zip: "20152", city: "Fairfax", coords: [38.9217, -77.5041] },
+            { zip: "20152", city: "Chantilly", coords: [38.8998, -77.51917] }
+        ];
+
+        var loudounMarkers = {};
+        loudounLocations.forEach(function (location) {
+            const marker = L.marker(location.coords)
+                .bindPopup(`<b>Zip Code:</b> ${location.zip}<br><b>City:</b> ${location.city}<br><b>County:</b> Loudoun County`);
+            const key = location.zip + " - " + location.city;
+            if (!loudounMarkers[key]) {
+                loudounMarkers[key] = [];
+            }
+            loudounMarkers[key].push(marker);
+            marker.addTo(loudounMap);
+        });
+
+        const loudounOptions = getUniqueZipCodes(loudounLocations);
+        populateSuggestions('loudoun-zip-input', 'loudoun-suggestions', loudounOptions, loudounMarkers, loudounMap, [39.1, -77.6, 10]);
+
+        // Fairfax County Map
+        var fairfaxMap = L.map('map2').setView([38.85, -77.3], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(fairfaxMap);
+
+        var fairfaxLocations = [
+            { zip: "22102", city: "McLean", coords: [38.943, -77.234] },
+            { zip: "22103", city: "West McLean", coords: [38.933, -77.184] },
+            { zip: "22106", city: "McLean", coords: [38.934, -77.180] },
+            { zip: "22103", city: "MLean", coords: [38.93417, -77.17750] },
+            { zip: "22116", city: "Merrifield", coords: [38.872, -77.234] },
+            { zip: "22121", city: "Mount Vernon", coords: [38.723, -77.101] },
+            { zip: "22122", city: "Newington", coords: [38.738, -77.197] },
+            { zip: "22124", city: "Oakton", coords: [38.881, -77.303] },
+            { zip: "22180", city: "Vienna", coords: [38.902, -77.263] },
+            { zip: "22181", city: "Vienna", coords: [38.891, -77.297] },
+            { zip: "22182", city: "Vienna", coords: [38.940, -77.264] },
+            { zip: "22183", city: "Vienna", coords: [38.894, -77.265] },
+            { zip: "22124", city: "Vienna", coords: [38.8909, -77.3303] },
+            { zip: "22306", city: "Community", coords: [38.75655, -77.09254] },
+            { zip: "22150", city: "Springfield", coords: [38.774, -77.181] },
+            { zip: "22151", city: "North Springfield", coords: [38.803, -77.202] },
+            { zip: "22152", city: "West Springfield", coords: [38.788, -77.233] },
+            { zip: "22153", city: "Springfield", coords: [38.747, -77.222] },
+            { zip: "22151", city: "Springfield", coords: [38.8038, -77.2082] },
+            { zip: "22152", city: "Springfield", coords: [38.77564, -77.23149] },
+            { zip: "22199", city: "Lorton", coords: [38.704, -77.236] },
+            { zip: "22303", city: "Jefferson Manor", coords: [38.7936, -77.0810] },
+            { zip: "22309", city: "Engleside", coords: [38.725018, -77.116272] },
+            { zip: "22303", city: "Alexandria", coords: [38.760, -77.089] },
+            { zip: "22306", city: "Alexandria", coords: [38.760, -77.089] },
+            { zip: "22307", city: "Alexandria", coords: [38.772065, -77.058721] },
+            { zip: "22307", city: " Belleview", coords: [38.777, -77.060] },
+            { zip: "22308", city: "Alexandria", coords: [38.726, -77.058] },
+            { zip: "22309", city: "Alexandria", coords: [38.719, -77.103] },
+            { zip: "22310", city: "Alexandria", coords: [38.8049, -77.103] },
+            { zip: "22310", city: "Franconia", coords: [38.778, -77.146] },
+            { zip: "22312", city: "Alexandria", coords: [38.822, -77.162] },
+            { zip: "22315", city: "Alexandria", coords: [38.7575, -77.1366] },
+            { zip: "22315", city: "Kingstowne", coords: [38.757, -77.142] },
+            { zip: "20120", city: "Sully Station", coords: [38.850, -77.406] },
+            { zip: "20120", city: "Centreville", coords: [38.844, -77.442] },
+            { zip: "20121", city: "Centreville", coords: [38.833, -77.447] },
+            { zip: "20122", city: "Centreville", coords: [38.840, -77.450] },
+            { zip: "20124", city: "Clifton", coords: [38.781, -77.404] },
+            { zip: "20151", city: "Chantilly", coords: [38.886, -77.428] },
+            { zip: "20151", city: "Fairfax", coords: [38.881, -77.392] },
+            { zip: "20153", city: "Chantilly", coords: [38.878, -77.454] },
+            { zip: "20153", city: "Fairfax", coords: [38.878, -77.454] },
+            { zip: "20170", city: "Herndon", coords: [38.978, -77.386] },
+            { zip: "20171", city: "Oak Hill", coords: [38.926, -77.406] },
+            { zip: "20171", city: "Herndon", coords: [38.925, -77.395] },
+            { zip: "20172", city: "Herndon", coords: [38.980, -77.387] },
+            { zip: "20190", city: "Reston", coords: [38.958, -77.341] },
+            { zip: "20190", city: "Herndon", coords: [38.958, -77.378] },
+            { zip: "20191", city: "Reston", coords: [38.938, -77.346] },
+            { zip: "20191", city: "Herndon", coords: [38.939, -77.356] },
+            { zip: "20194", city: "Reston", coords: [38.977, -77.342] },
+            { zip: "20194", city: "Herndon", coords: [38.976, -77.355] },
+            { zip: "20195", city: "Reston", coords: [38.950, -77.350] },
+            { zip: "20195", city: "Herndon", coords: [38.950, -77.360] },
+            { zip: "22003", city: "Annandale", coords: [38.830, -77.196] },
+            { zip: "22009", city: "Springfield", coords: [38.770, -77.190] },
+            { zip: "22009", city: "Burke", coords: [38.793, -77.271] },
+            { zip: "22015", city: "Springfield", coords: [38.790, -77.236] },
+            { zip: "22015", city: "Burke", coords: [38.7936, -77.2717] },
+            { zip: "22027", city: "Dunn Loring", coords: [38.8937, -77.2232] },
+            { zip: "22027", city: "Vienna", coords: [38.9012, -77.2653] },
+            { zip: "22031", city: "Fairfax", coords: [38.8656, -77.2627] },
+            { zip: "22032", city: "Fairfax", coords: [38.8309, -77.3044] },
+            { zip: "22033", city: "Fairfax", coords: [38.874, -77.3863] },
+            { zip: "22034", city: "Fairfax", coords: [38.8462, -77.3064] },
+            { zip: "22035", city: "Fairfax", coords: [38.8579, -77.3572] },
+            { zip: "22036", city: "Fairfax", coords: [38.8511, -77.3065] },
+            { zip: "22039", city: "Fairfax Station", coords: [38.7576, -77.3214] },
+            { zip: "22041", city: "Baileys Crossroads", coords: [38.8493, -77.1277] },
+            { zip: "22041", city: "Falls Church", coords: [38.8489, -77.1294] },
+            { zip: "22042", city: "Mosby", coords: [38.8795, -77.2107] },
+            { zip: "22042", city: "Falls Church", coords: [38.8805, -77.2069] },
+            { zip: "22043", city: "Pimmit", coords: [38.9005, -77.2042] },
+            { zip: "22043", city: "Falls Church", coords: [38.9012, -77.2031] },
+            { zip: "22044", city: "Seven Corners", coords: [38.8691, -77.1536] },
+            { zip: "22044", city: "Falls Church", coords: [38.8694, -77.1522] },
+            { zip: "22060", city: "Fort Belvoir", coords: [38.7108, -77.1473] },
+            { zip: "22066", city: "Great Falls", coords: [39.0065, -77.2883] },
+            { zip: "22067", city: "Greenway", coords: [38.989, -77.291] },
+            { zip: "22067", city: "Mclean", coords: [38.9336, -77.1775] },
+            { zip: "22079", city: "Mason Neck", coords: [38.6754, -77.1975] },
+            { zip: "22079", city: "Lorton", coords: [38.7044, -77.2202] },
+            { zip: "22081", city: "Merrifield", coords: [38.874, -77.2256] },
+            { zip: "22101", city: "Mclean", coords: [38.9397, -77.1679] },
+            { zip: "22102", city: "West Mclean", coords: [38.9421, -77.2297] }
+        ];
+
+        var fairfaxMarkers = {};
+        fairfaxLocations.forEach(function (location) {
+            const marker = L.marker(location.coords)
+                .bindPopup(`<b>Zip Code:</b> ${location.zip}<br><b>City:</b> ${location.city}<br><b>County:</b> Fairfax County`);
+            const key = location.zip + " - " + location.city;
+            if (!fairfaxMarkers[key]) {
+                fairfaxMarkers[key] = [];
+            }
+            fairfaxMarkers[key].push(marker);
+            marker.addTo(fairfaxMap);
+        });
+
+        const fairfaxOptions = getUniqueZipCodes(fairfaxLocations);
+        populateSuggestions('fairfax-zip-input', 'fairfax-suggestions', fairfaxOptions, fairfaxMarkers, fairfaxMap, [38.85, -77.3, 11]);
+
+        // Fix for maps not rendering properly when in hidden tabs
+        document.querySelector('.tab-item[data-tab="fairfax"]').addEventListener('click', function () {
+            setTimeout(function () {
+                fairfaxMap.invalidateSize();
+            }, 10);
+        });
+
+        document.querySelector('.tab-item[data-tab="loudoun"]').addEventListener('click', function () {
+            setTimeout(function () {
+                loudounMap.invalidateSize();
+            }, 10);
+        });
+
+/*================================================*/
+
+						$(document).ready(function() {
+																								var timer;
+																										$('#loudoun-zip-input').on("input", function(ev) {
+																														if (timer) {
+																																		clearTimeout(timer);
+																																		timer = null;
+																														}
+																														timer = setTimeout(function(){			
+																														let ToSearch =$('#loudoun-zip-input').val();
+																														let match = loudounLocations.find(loc => 
+																																		loc.zip === ToSearch || loc.city.toLowerCase() === ToSearch.toLowerCase()
+																														);
+																														if (match) {																																	
+																																		$('#available').show();		
+																																		$('#notavailable').hide();
+																														} else {
+																																		$('#available').hide();	
+																																		$('#notavailable').show();	
+																														}
+																																		timer = null;
+																														}, 1000);
+																										})
+
+
+							 $('#loudoun-suggestions').on('click', '.suggestion-item', function () {
+        var selectedText = $(this).text();
+        $('#loudoun-zip-input').val(selectedText);       
+        $('#available').show(); // Optional
+								$('#notavailable').hide();
+    });
+});	
+
+
+
+						$(document).ready(function() {
+																								var timer;
+																										$('#fairfax-zip-input').on("input", function(ev) {
+																														if (timer) {
+																																		clearTimeout(timer);
+																																		timer = null;
+																														}
+																														timer = setTimeout(function(){			
+																														let ToSearch =$('#fairfax-zip-input').val();
+																														let match = fairfaxLocations.find(loc => 
+																																		loc.zip === ToSearch || loc.city.toLowerCase() === ToSearch.toLowerCase()
+																														);
+																														if (match) {																																	
+																																		$('#available2').show();		
+																																		$('#notavailable2').hide();
+																														} else {
+																																		$('#available2').hide();	
+																																		$('#notavailable2').show();	
+																														}
+																																		timer = null;
+																														}, 1000);
+																										})
+
+
+							 $('#fairfax-suggestions').on('click', '.suggestion-item', function () { 
+        var selectedText = $(this).text();
+        $('#fairfax-zip-input').val(selectedText);       
+        $('#available2').show(); // Optional
+								$('#notavailable2').hide();
+    });
+});	
+</script>
+<script>
+  $('#loudoun-form').on('submit', function (e) {
+    e.preventDefault();     
+    $.ajax({
+      url: '{% url "send_email_loudoun" %}', // URL from Django urls.py
+      method: 'POST',
+      data: $(this).serialize(),
+      headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      success: function (response) { 
+        //alert(response.message);
+								swal.fire({
+                                title: "Success",
+                                type: "success",
+                                text: response.message,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            });
+      },
+      error: function (xhr) {
+        alert("Error: " + xhr.responseText);
+      }
+    });
+  });
+
+		$('#fairfax-form').on('submit', function (e) {
+    e.preventDefault();     
+    $.ajax({
+      url: '{% url "send_email_fairfax" %}', // URL from Django urls.py
+      method: 'POST',
+      data: $(this).serialize(),
+      headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      success: function (response) { 
+        //alert(response.message);
+								swal.fire({
+                                title: "Success",
+                                type: "success",
+                                text: response.message,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            });
+      },
+      error: function (xhr) {
+        alert("Error: " + xhr.responseText);
+      }
+    });
+  });
+</script>
+<style>.contact-page-form__input-box input[type="text"], .contact-page-form__input-box input[type="email"] {
+    height: 40px !important;
+    width: 100%;
+    border: 1px solid #4e4f52;
+    background-color: transparent;
+    padding-left: 20px;
+    padding-right: 20px;
+    outline: none;
+    font-size: 15px;
+    color: #121213;
+    display: block;
+    font-weight: 400;
+    border-radius: 10px;
+}</style>
+
+{% endif %}
+
+		<!---=========================================================================---->
+	 </div>
+</section>
+	<!---{{ html_data.headercontent | replace_code | safe }}-->
+	<!--Why Choose One End-->
+
+<!---	<div class="contact-section">
+		{{ html_data.footer_top |replace_code|safe }}-->
+
+	{% include 'layouts/footer.html' %}   
+
+</body>
+</html>

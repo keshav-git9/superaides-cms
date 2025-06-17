@@ -1,0 +1,245 @@
+
+{% extends 'layouts/headerapp.html' %}
+{% block content %}
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        {{form.media}}
+        {% include "layouts/sidebar-header.html" %}
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title">{% if not data.id %} Add Navigation Group Page Details {% else %} Edit Navigation Group Page Details {% endif %} </h1>                
+            </div>            
+            <!---------------------->
+            <div class="page-content fade-in-up">
+                <div class="alert bg-white">
+                    <a class="btn btn-success" href="{% url 'navi-group-page' nid %}" >Navigation Group Pages List</a>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">{% if not data.id %} Add Navigation Group Page Details {% else %} Edit Navigation Group Page Details {% endif %} </div>
+                        <div class="ibox-tools">
+                            <a class="ibox-collapse"></a>
+                        </div>
+                    </div>
+                    <div class="ibox-body">
+                        {% if not data.id %} 
+                        <form id="addhtml_form" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                            {% else %}
+                        <form id="addhtml_form"  method="POST" class="form-horizontal"  enctype="multipart/form-data">    
+                        {% endif %}                        
+                             {% csrf_token %}                               
+                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Link Title <em class="text-danger">*</em>: </label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="title" id="title" value="{{data.title}}" style="width:400px">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Link Type <em class="text-danger">*</em>: </label>
+                                <div class="col-sm-9">                                
+                                    <label><input type="radio" name="link_type" id="internal_link" {% if data.link_type == 0 %}checked{% endif %} value="0" checked="">&nbsp;Internal Link
+                                        &nbsp;<input type="radio" name="link_type" {% if data.link_type == 1 %}checked{% endif %} id="external_link" value="1">&nbsp;External Link
+							        </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Pages <em class="text-danger">*</em>:</label>  
+                                <div class="col-sm-10"  id="internal_link_box" {% if data.link_type == 0 %} style="display:block" {% elif  data.link_type == 1 %} style="display:none" {% endif %} >
+                                     <select name="page" id="page" class="form-control" style="width:400px">                                        
+                                        {% for page in pagedata %}     
+                                        <option value="{{page.url}}" {% if page.title == data.title %}selected{% endif %} >{{page.title}}</option>                                        
+                                        {% empty %}
+                                        <option value="0" >No Page Available</option>
+                                        {% endfor %} 
+                                    </select>   
+                                </div>
+
+                                <div class="col-sm-10" id="external_link_box" {% if data.link_type == 1 %} style="display:block" {% else %} style="display:none" {% endif %} >                                                                       
+                                    <label><input type="text" name="external_link"  value="{{data.external_link}}" class="form-control" style="width:400px"/>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Target <em class="text-danger">*</em>:</label>
+                                <div class="col-sm-9">                                    
+                                    <label><input type="radio" name="target" id="target" {% if data.target == 1 %}checked{% endif %}value="0" checked="">&nbsp;Self&nbsp;
+                                        <input type="radio" name="target" id="target" {% if data.target == 1 %}checked{% endif %}value="1">&nbsp;Blank
+							        </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Start Image <em class="text-danger">*</em>:</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="file" name="start_image" id="start_image" placeholder="Start Image" style="width:400px">
+                                    {% if data.start_image %}
+                                    <img src="{{data.start_image.url}}" alt="Logo" style="max-width: 20%;">
+                                    {% else %}
+                                        <p>No Start Image available</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">End Image <em class="text-danger">*</em>:</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="file" name="end_image" id="end_image"placeholder="End Image" style="width:400px">
+                                    {% if data.end_image %}
+                                    <img src="{{data.end_image.url}}" alt="Logo" style="max-width: 20%;">
+                                    {% else %}
+                                        <p>No End Image available</p>
+                                    {% endif %}
+                                </div>
+                            </div> 
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Order <em class="text-danger">*</em>:</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="number" name="order" id="order" value="{{data.order}}" style="width:400px">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-sm-auto">  
+                                    <button type="button" class="btn btn-info btn-cancel btn-sm" onclick="history.back();">Back </button>
+                                    {% if not data.id %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Submit</button>
+                                    {% else %}
+                                    <button type="submit" id="udBtn" class="btn btn-info btn-sm">Update</button>    
+                                    {% endif %}  
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        <script>
+                            CKEDITOR.replace('contents', {
+                                filebrowserUploadUrl: '{% url "ckeditor_upload" %}?type=Files',
+                                filebrowserBrowseUrl: '{% url "ckeditor_browse" %}?type=Files',
+                            });
+                        </script>
+                    </div>
+                </div>                
+            </div>
+            <!-- END PAGE CONTENT-->
+           {% include "layouts/adminfooter.html" %}
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->
+   
+    <!-- END THEME CONFIG PANEL-->
+    <!-- BEGIN PAGA BACKDROPS-->
+    <div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>
+    <!-- END PAGA BACKDROPS-->
+    <!-- CORE PLUGINS-->
+<!-- SweetAlert 2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+    $(document).ready(function(){                
+			$("#external_link").click(function(){
+			  $("#external_link_box").show();
+			  $("#internal_link_box").hide();
+			}); 			
+			$("#internal_link").click(function(){
+			  $("#external_link_box").hide();
+			  $("#internal_link_box").show();			  
+			}); 			 			   
+		});
+		
+$(document).ready(function() {
+    $("select").niceSelect("destroy"); // Remove nice-select styling
+});
+</script>
+
+<script>
+    $(document).ready(function() {               
+        $("#addhtml_form").validate({                  
+            rules: {                    
+                title: { required: true, minlength: 3 },                                 
+            },
+            messages: {                   
+                title: { required: "Please enter a title." },  
+            },
+            errorClass: "help-block error",
+            highlight: function(element) {
+                $(element).closest(".form-group.row").addClass("has-error");
+            },
+            unhighlight: function(element) {
+                $(element).closest(".form-group.row").removeClass("has-error");
+            },
+            submitHandler: function(form) {  // FIXED: Only `form` parameter
+                $('#udBtn').text('Please Wait...').attr("disabled", true);  // Disable button
+
+                var nid = "{{ nid|default:0 }}";                   
+                var editid = "{{ data.id|default:0 }}";  
+                var urlpost = (editid == "0") 
+                    ? "{% url 'navi-group-page-add' 0 %}".replace('0', nid) 
+                    : "{% url 'navi-group-page-edit' 0 0 %}".replace('0', nid).replace('0', editid);
+
+                let formData = new FormData(form);                                       
+
+                $.ajax({
+                    url: urlpost,
+                    type: "POST",                       
+                    data: formData,
+                    processData: false,                        
+                    contentType: false,
+                    dataType: "json",
+                    success: function(result) { 
+                        $('#udBtn').text('Save').attr("disabled", false);  // Enable button again
+
+                        if (result.response === "success") {
+                            Swal.fire({
+                                title: result.title,
+                                icon: "success",
+                                text: result.msg,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok",
+                            }).then(function(){ location.reload(); });  // Reload on success
+                        } 
+                        else if (result.response === "notSaved") {  // FIXED: Correct condition
+                            Swal.fire({
+                                title: result.title,
+                                icon: result.icon,
+                                text: result.errors,
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok"
+                            });
+                        } 
+                        else { 
+                            Swal.fire({
+                                title: "Error",
+                                icon: "warning",
+                                text: "Something went wrong! Please try again!",
+                                confirmButtonColor: "#007bff",
+                                confirmButtonText: "Ok"
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) { 
+                        $('#udBtn').text('Submit').attr("disabled", false);
+                        Swal.fire({
+                            title: "Error",
+                            icon: "warning",
+                            text: "Something went wrong! Please try again.",
+                            confirmButtonColor: "#007bff",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                });
+
+                return false; // Prevent form submission (important!)
+            }
+        });
+    });
+</script>
+
+   {% endblock %}
+    <!-- PAGE LEVEL PLUGINS-->
+    <!-- CORE SCRIPTS-->    
+
+
