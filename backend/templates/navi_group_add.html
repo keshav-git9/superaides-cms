@@ -38,7 +38,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Code </label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="text" name="code" id="code" value="{{data.code}}">
+                                    <input class="form-control" type="text" name="code" id="code" value="{{data.code}}" style="{% if not data.code %} pointer-events: none; {% endif %}">
                                 </div>
                             </div>
                              <div class="form-group row">

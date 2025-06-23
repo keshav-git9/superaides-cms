@@ -18,7 +18,7 @@ from django.contrib.auth.models import Group, Permission
 from django.urls import reverse
 import re
 
-from .forms import (HtmlForm,logoandfavicon,socialmediapages,googlerecaptcha,googleanalytic,UserEditForm,
+from .forms import (HtmlForm,logoandfavicon,socialmediapages,googlerecaptcha,googleanalytic,UserEditForm,AuthenticationFormWithCaptcha,
                     sociallogin,facebookpixel,PageForm,NavigroupForm,NavigrouppageForm,PostForm,CategoryForm,TagForm,GroupForm,RegisterForm,TestimonialForm)
 #Html,
 User = get_user_model()
@@ -42,7 +42,34 @@ def forgot_password_view(request):
     return render(request, 'auth/forgot_password.html')
 
 
+
 def login_view(request):
+    error_message = ""
+    if request.method == 'POST':
+        remember_me = request.POST.get('remember_me')
+        if not remember_me:
+            request.session.set_expiry(0)
+        else:
+            request.session.set_expiry(604800)
+
+        form = AuthenticationFormWithCaptcha(request, data=request.POST)
+        
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            error_message = "Invalid username, password, or CAPTCHA."
+    else:
+        form = AuthenticationFormWithCaptcha()
+    
+    return render(request, 'auth/login.html', {'form': form, 'error_message': error_message})
+
+
+
+
+
+def login_view_ssssss(request):
     if request.method == 'POST':
         remember_me = request.POST.get('remember_me')
         if not remember_me:
@@ -320,7 +347,7 @@ def delete_page(request):
 
 def generate_unique_slug(title):
     """Generates a unique slug by removing special characters and handling duplicates"""
-    title_slug = re.sub(r'[^a-zA-Z0-9\-]', '', title)    # Clean title
+    title_slug = re.sub(r'[^a-zA-Z0-9\-]', '-', title)    # Clean title
 
     # If the slug exists, append a number and check again
     if Pages.objects.filter(title=title_slug).exists():
@@ -964,6 +991,8 @@ def post_add(request):
         allFiles = request.FILES                
         form = PostForm(data=allData, files=allFiles)       
         if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
             form.save()
             msg = {'response': 'success', 'title':'Data Saved!', 'icon':'success',  'msg': 'Your data has been successfully saved.'}
         else:
@@ -988,7 +1017,10 @@ def post_edit(request, id):
     if request.method == "POST":       
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.author = request.user  # ✅ Ensures author is set on update
+            post.save()
+            #form.save_m2m()
             #messages.success(request, "Record update successfully!")
             msg = {'response': 'success', 'title':'Data Saved!', 'icon':'success',  'msg': 'Your data has been successfully update.'}
         else:

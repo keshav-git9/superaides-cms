@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                             <ul class="list-unstyled blog-page__meta">
-                               <!---- <li><a href="{% url 'post-detail' post.slug %}"><i class="fas fa-user-circle"></i> Jhon Albert</a></li>-->
+                               <li><a href="{% url 'post-detail' post.slug %}" style="text-transform: capitalize;"><i class="fas fa-user-circle"></i> {{ post.author }}</a></li>
                                 <li><a href="{% url 'post-detail' post.slug %}"><i class="fas fa-comments"></i> {{ post.comment_count }} Comment</a></li>
                                 <li><a class="like-button" data-post-id="{{ post.id }}" style="cursor: pointer;">
                                     <i class="fas fa fa-thumbs-up"></i> <span id="like-count-{{ post.id }}">{{ post.likes }}</span> Like

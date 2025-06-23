@@ -62,9 +62,18 @@
                                     <div class="contact-page-form__input-box text-message-box">
                                         <textarea name="message" id="message" placeholder="Your Message"></textarea>
                                     </div>
+                                   
                                     <div class="contact-page-form__btn-box">
-                                        <button type="submit" id="udBtn" class="thm-btn contact-page-form__btn">Send Message
-                                            <span class="icon-plus"></span></button>
+                                                         
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            {{ form.captcha }}
+                                            <!---<a href="#" class="captcha-refresh" title="Refresh Captcha">🔄</a>-->    
+                                            <button type="submit" id="udBtn" class="thm-btn contact-page-form__btn">Send Message <span class="icon-plus"></span></button>                            
+                                        </div>
+                                        {% for error in form.captcha.errors %}
+                                            <div class="text-danger">{{ error }}</div>   
+                                        {% endfor %}
+                                         <div id="captcha_error" class="text-danger"></div>                                        
                                     </div>
                                 </div>
                             </div>
@@ -93,8 +102,42 @@
   .error{color: #e74c3c;
     display: block;
     font-size: 13px;
-    margin-bottom: 0;}</style>   
+    margin-bottom: 0;
+}
+
+  .error{color: #e74c3c;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 0;}
+
+
+#id_captcha_1{
+    height: 60px;
+    width: 30%;
+    border: 1px solid #dfe0e5;
+    background-color: transparent;
+    padding-left: 20px;
+    padding-right: 20px;
+    outline: none;
+    font-size: 15px;
+    color: var(--meciy-gray);
+    display: block;
+    font-weight: 400;
+    border-radius: 10px;
+   }
+   .captcha{
+    height: 60px;
+   }
+   dl, ol, ul {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    list-style-type: none;
+    padding-inline-start: 0px;
+    left: 0;
+}
+   </style> 
 <script>
+    
     $(document).ready(function(e) {               
         $("#contact_form").validate({ 
             //ignore: [],  
@@ -106,8 +149,9 @@
                 minlength: 10,                // Example: Minimum length of 10 digits (adjust as needed)
                 digits: true                  // Ensure only digits are allowed
                 },   
-                subject: { required: true,minlength: 3  },   
-                message: { required: true,minlength: 3  }                    
+                subject: { required: true,minlength: 3  },                   
+                message: { required: true,minlength: 3  },
+                captcha_1: {required: true },                    
             },
             messages: {
                 fullname: {
@@ -125,9 +169,21 @@
                     digits: "Please enter a valid phone number with digits only."
                 }, 
                 subject: { required: "Please enter the subject."}, 
-                message: { required: "Please enter your message." }                     
+                message: { required: "Please enter your message." } , 
+                captcha_1: {
+                    required: "Please enter captcha code.",
+                },                   
             },
             errorClass: "help-block error",
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "captcha_1") {
+                    // Put error in custom div
+                    error.appendTo("#captcha_error");
+                } else {
+                    // Default placement
+                    error.insertAfter(element);
+                }
+            },
             highlight: function(e) {
                 $(e).closest(".form-group.row").addClass("has-error")
             },
@@ -181,11 +237,23 @@
                             swal.fire({
                             title: "Error",
                             type: "warning",
+                            //text: result.errors,
                             text: "Something went wrong! Please try again",
                             confirmButtonColor: "#007bff",
                             confirmButtonText: "Ok",
                             closeOnConfirm: true
                             })
+                                   if (result.errors) {
+                                    const response = result.errors;
+                                       // $('.text-danger').remove(); // Remove existing errors
+                                        const errors = JSON.parse(result.errors);
+                                       if (errors.captcha && errors.captcha.length > 0) {
+                                            const errorMessage = errors.captcha[0].message;
+                                            //alert(errorMessage);  // Shows: "Invalid CAPTCHA"
+                                            $('.text-danger').text(errorMessage);                                            
+                                        }
+                                        
+                                    }
                         }
                     },
                     error: function(xhr, status, error) { 

@@ -33,7 +33,8 @@ urlpatterns = [
     path('forum/', include('forum.urls')),  
 
 	path('ckeditor/', include('ckeditor_uploader.urls')),
-	path('', include('frontend.urls')),  			
+	path('', include('frontend.urls')),  	
+    path('captcha/', include('captcha.urls')),		
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
@@ -43,3 +44,5 @@ def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
 # Tell Django to use this function for 404 errors
 handler404 = custom_404_view
+
+handler404 = 'frontend.views.custom_404'

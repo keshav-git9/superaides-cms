@@ -5,6 +5,8 @@ from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import ValidationError
 from .models import CustomUser,Html,Cms_setting,Pages,Navigroups,Navigroupspages,Post,Category,Comment,Tag,Testimonial
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from captcha.fields import CaptchaField
 
 
 class RegisterForm(forms.ModelForm):
@@ -43,7 +45,8 @@ class UserEditForm(forms.ModelForm):
         fields = ['name', 'email', 'mobile', 'is_active', 'groups']  # Add any other fields you want editable
 
     
-
+class AuthenticationFormWithCaptcha(AuthenticationForm):
+    captcha = CaptchaField()
 
 
 

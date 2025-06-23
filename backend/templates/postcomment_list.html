@@ -57,7 +57,7 @@
                         <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Sr.no.</th>
+                                    <th>Sl. No.</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Comment</th>
@@ -75,9 +75,15 @@
                                         <td>{{ item.content }}</td>
                                         <td>{{ item.created_at }}</td>
                                         <td> 
-                                             <button class="btn btn-xs {% if item.is_approved == False %} btn-danger {% else %} font-weight-bold text-primary {% endif %}" onclick="changeStatus({{item.id}},0)">Inactive </button>
+                                             
+                                            <!---<button class="btn btn-xs {% if item.is_approved == False %} btn-danger {% else %} font-weight-bold text-primary {% endif %}" onclick="changeStatus({{item.id}},0)">Inactive </button>
                                             <button class="btn btn-xs {% if item.is_approved == True %} btn-success {% else %} font-weight-bold text-primary {% endif %}" onclick="changeStatus({{item.id}},1)">Active</button>
-                                         </td>                                       
+                                        -->
+                                            
+                                            <button class="btn btn-xs {% if item.is_approved == True %} btn-success {% else %} btn-danger {% endif %}" 
+                                            onclick="changeStatus({{item.id}}, {% if item.is_approved == True %} 0 {% else %} 1 {% endif %} )"> {% if item.is_approved == True %} Approved {% else %} Rejected {% endif %}
+                                            </button>
+                                        </td>                                       
                                         <!--<td>
                                             <span class="dis_in" title="" data-toggle="tooltip" data-placement="top" data-original-title="Edit">
                                                 <a href="{% url 'post-edit' item.id %}">Delete</a>

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'frontend', 
     'django_extensions',
     'forum',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -244,3 +245,16 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'vsuccess8800@gmail.com'
 EMAIL_HOST_PASSWORD = 'yuioafidxzzxgrkk'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+###########################################
+        # captch settings #
+###########################################
+CAPTCHA_IMAGE_SIZE = (150, 50)  # Change the size of the CAPTCHA image
+CAPTCHA_FONT_SIZE = 32  # Adjust the font size of the CAPTCHA text
+CAPTCHA_BACKGROUND_COLOR = '#ebebea'  # Set the background color
+CAPTCHA_FOREGROUND_COLOR = '#001100'  # Set the text color
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'  # Use a random character challenge
+CAPTCHA_NOISE_FUNCTIONS = ()   # Add noise to the CAPTCHA
+CAPTCHA_FONT_PATH = 'G:/django-project/superaids-cms/fonts/roboto/Roboto-Black.ttf'  # Path to a custom font file
+CAPTCHA_LENGTH = 4  # Number of characters in the CAPTCHA

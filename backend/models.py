@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin,Group
 from django.utils import timezone
 from django.utils.text import slugify
 from .managers import CustomUserManager
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
@@ -34,7 +35,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return self.name
     
     def has_module_perms(self, app_label):
         # Assuming all users have permission to access all modules
@@ -86,6 +87,7 @@ class Navigroupspages(models.Model):
     title = models.CharField(max_length=200,null=True, blank=True)    
     navi_code = models.ForeignKey(Navigroups, on_delete=models.CASCADE, related_name="pages")  # Group link
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name="children")  # Self-referencing for submenus
+    page_id = models.IntegerField(default=0,null=True, blank=True)
     page = models.CharField(max_length=100, null=True, blank=True)
     order=models.IntegerField(default=0,null=True, blank=True)
     target=models.IntegerField(default=0,null=True, blank=True)
@@ -145,7 +147,8 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='posts')
     likes = models.PositiveIntegerField(default=0,blank=True, null=True)
-   
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts',null=True,blank=True)
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
@@ -159,9 +162,10 @@ class Comment(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     content = models.TextField()
-    status = models.IntegerField(default=1,blank=True, null=True)
+    status = models.IntegerField(default=0,blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     is_approved = models.BooleanField(default=True)  # Optional moderation
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
 
     def __str__(self):
         return f"Comment by {self.name} on {self.post.title}"
@@ -182,7 +186,7 @@ class Testimonial(models.Model):
 
 #===============================================================================================
     
-"""class Cms_setting(models.Model):
+class Cms_setting(models.Model):
     existing_logo_title =models.CharField(max_length=250, null=True, blank=True)
     existing_logo = models.FileField(upload_to='images/', default='images/default_logo.png')     
     footer_logo = models.FileField(upload_to='images/', default='images/default_logo.png')
@@ -217,10 +221,9 @@ class Testimonial(models.Model):
             verbose_name_plural = "Cms_settings"
         
     def __str__(self):
-        return self.existing_logo_title or "Unnamed Object"
-    """          
+        return self.existing_logo_title or "Unnamed Object"       
 
-class Cms_setting(models.Model):
+"""class Cms_setting(models.Model):
     existing_logo_title =models.CharField(max_length=250)
     existing_logo = models.FileField(upload_to='images/', default='images/default_logo.png')     
     footer_logo = models.FileField(upload_to='images/', default='images/default_logo.png')
@@ -255,6 +258,6 @@ class Cms_setting(models.Model):
             verbose_name_plural = "Cms_settings"
         
     def __str__(self):
-        return self.existing_logo_title or "Unnamed Object"
+        return self.existing_logo_title or 'Unnamed Object'"""
     
 #=========================================================================================

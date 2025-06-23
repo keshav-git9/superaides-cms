@@ -3547,3 +3547,6 @@ table.dataTable {
     -webkit-justify-content: start !important;
     -ms-flex-pack: start !important;
     justify-content: start !important; } }
+
+
+#example-table_length{display:none;}

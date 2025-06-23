@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.utils.timezone import now
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
@@ -7,11 +9,12 @@ from django.http import Http404
 from django.http import HttpResponse, JsonResponse,Http404
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt 
-from backend.models import Html,Cms_setting,Pages,Navigroups,Navigroupspages,Contactus,Post,Category,Tag,CustomUser,Testimonial
+from backend.models import Html,Cms_setting,Pages,Navigroups,Navigroupspages,Contactus,Post,Category,Tag,CustomUser,Testimonial,Comment
 from .forms import ContactusForm,CommentForm
 from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.views.decorators.http import require_POST
+
 
 def frontend_login(request):
     if request.method == 'POST':
@@ -168,31 +171,61 @@ def blog_list(request):
         'search_key': search_key
     })
 
+def get_client_ip(request):
+    """ Utility to get the client's IP address. """
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug, status=True)
-    comments = post.comments.filter(is_approved=True).order_by('-created_at')  # List of approved comments
+    comments = post.comments.filter(is_approved=True).order_by('-created_at')
+    ip_address = get_client_ip(request)
+    today = now().date()
 
     if request.method == 'POST':
+        comment_count = Comment.objects.filter(
+            ip_address=ip_address,
+            created_at__date=today
+        ).count()
+
         form = CommentForm(request.POST)
+        
+        if comment_count >= 5:
+            messages.error(request, 'You have reached the daily comment limit (5 per day).')
+            return redirect(request.path_info)
+
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
+            comment.is_approved = 0
+            comment.ip_address = ip_address
             comment.save()
-            form = CommentForm()  # Reset form after submission
+            messages.success(request, 'Your comment has been submitted and is pending approval.')
+            return redirect(request.path_info)
+        else:
+            messages.error(request, 'There was an error submitting your comment. Please check the form.')
+
     else:
         form = CommentForm()
 
     tags = Tag.objects.annotate(post_count=Count('posts')).filter(posts__status=True).distinct()
     post_list = Post.objects.filter(status=True).order_by('-published_at')
     categories = Category.objects.annotate(post_count=Count('posts')).order_by('-id')
+
     return render(request, 'post_detail.html', {
         'post': post,
-        'tags':tags,
+        'tags': tags,
         'posts': post_list,
-        'categories': categories, 
+        'categories': categories,
         'comments': comments,
-        'form': form})
+        'form': form,
+    })
+
 
 
 @csrf_exempt  # or use CSRF token in your JS
@@ -282,3 +315,9 @@ def send_email_fairfax(request):
         return JsonResponse({'message': 'Email sent successfully!'})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+
+
+#=============================================================
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)

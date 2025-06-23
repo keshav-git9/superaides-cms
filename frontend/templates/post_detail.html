@@ -44,7 +44,7 @@
                                 </div>
                         </div>
                         <ul class="list-unstyled blog-page__meta">
-                            <!---<li><a href="{% url 'post-detail' post.slug %}"><i class="fas fa-user-circle"></i> Jhon Albert</a></li>-->
+                            <li><a href="{% url 'post-detail' post.slug %}" style="text-transform: capitalize;"><i class="fas fa-user-circle"></i> {{ post.author }}</a></li>
                             <li><a href="{% url 'post-detail' post.slug %}"><i class="fas fa-comments"></i> {{ comments.count }} Comment</a></li>
                             <li><a class="like-button" data-post-id="{{ post.id }}" style="cursor: pointer;">
                                 <i class="fas fa fa-thumbs-up"></i> <span id="like-count-{{ post.id }}">{{ post.likes }}</span> Like
@@ -74,20 +74,31 @@
                         <div class="row">
                             <div class="col-xl-6 col-lg-6 mb-2">
                                 <div class="form-group">                                  
-                                    <input type="text" name="name" class="form-control" id="id_name" placeholder="Full name" required>
+                                    <input type="text" name="name" class="form-control" id="id_name" placeholder="Full name" value="{{ form.name.value|default_if_none:'' }}" required>
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6">
                                 <div class="form-group">                                   
-                                    <input type="email" name="email" class="form-control" id="id_email" placeholder="Email Address" required>
+                                    <input type="email" name="email" class="form-control" id="id_email" placeholder="Email Address" value="{{ form.email.value|default_if_none:'' }}" required>
                                 </div>
                             </div>                        
                         </div>
                     
                         <div class="form-group mb-2">                           
-                            <textarea name="content" class="form-control" id="id_content" rows="5" placeholder="Comment" required></textarea>
-                        </div>                    
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                            <textarea name="content" class="form-control" id="id_content" rows="5" placeholder="Comment" required>{{ form.content.value|default_if_none:'' }}</textarea>
+                        </div>    
+                        
+                        <div class="form-group">                           
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                {{ form.captcha }}
+                                <!---<a href="#" class="captcha-refresh" title="Refresh Captcha">🔄</a>-->
+                                 <button type="submit" class="btn btn-primary" style="border-radius: 5px;">Submit</button>
+                            </div>
+                            {% for error in form.captcha.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                       
                     </form>                                         
                 </div>
             </div>
@@ -163,7 +174,46 @@
     font-size: 13px;
     margin-bottom: 0;}
 </style>   
+<style>#id_captcha_1{
+    display: block;
+    width: 30%;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.50;
+    color: #495057;
+    background-color: #fff;
+    background-image: none;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+   }
+   .captcha{
+    height: 37px;
+   }
+   dl, ol, ul {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    list-style-type: none;
+    padding-inline-start: 0px;
+    left: 0;
+}
+   </style> 
 
+
+{% if messages %}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    {% for message in messages %}
+      Swal.fire({
+        icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+        title: "{{ message|escapejs }}",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+      });
+    {% endfor %}
+  </script>
+{% endif %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const buttons = document.querySelectorAll('.like-button');
@@ -188,116 +238,13 @@
         });
     });
 </script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function(e) {               
-        $("#contact_form").validate({ 
-            //ignore: [],  
-            rules: {
-                fullname: {required: true, minlength: 3 },
-                email: { required: true, email: true  },  
-                phone: {
-                required: true,               // Phone is required
-                minlength: 10,                // Example: Minimum length of 10 digits (adjust as needed)
-                digits: true                  // Ensure only digits are allowed
-                },   
-                subject: { required: true,minlength: 3  },   
-                message: { required: true,minlength: 3  }                    
-            },
-            messages: {
-                fullname: {
-                    required: "Please enter your full name.",
-                    minlength: "Your full name must be at least 3 characters long."
-                },
-                email: {
-                required: "Please enter your email address.",
-                email: "Please enter a valid email address.",  // Error message for invalid email format
-                },
-
-                phone: { 
-                    required: "Please enter your phone number.",
-                    minlength: "Your phone number must be at least 10 digits long.",
-                    digits: "Please enter a valid phone number with digits only."
-                }, 
-                subject: { required: "Please enter the subject."}, 
-                message: { required: "Please enter your message." }                     
-            },
-            errorClass: "help-block error",
-            highlight: function(e) {
-                $(e).closest(".form-group.row").addClass("has-error")
-            },
-            unhighlight: function(e) {
-                $(e).closest(".form-group.row").removeClass("has-error")
-            },
-            submitHandler: function(form) {
-                // AJAX form submission
-                event.preventDefault();
-                $('#udBtn').text('Please Wait...');          
-                document.getElementById('udBtn').setAttribute("disabled","disabled");  
-                
-                var formData = new FormData(form);  
-                $.ajax({
-                    url: "{% url 'contactus' %}",
-                    type : "POST",                       
-                    data : formData,
-                    processData : false,                        
-                    contentType:false,
-                    dataType : 'json',
-                    success: function(result) { 
-                        $('#udBtn').text('Save');              
-                        document.getElementById('udBtn').removeAttribute("disabled");  
-                        //Handle the success response from Django
-                        if(result.response == 'success'){
-                            swal.fire({
-                                title: result.title,
-                                type: "success",
-                                text: result.msg,
-                                confirmButtonColor: "#007bff",
-                                confirmButtonText: "Ok",
-                                closeOnConfirm: true
-                            }).then(function(){ location.reload(); });
-            
-                        }else if(result.response == 'Not Saved'){ 
-                            $('#udBtn').text('Submit');
-                            document.getElementById('udBtn').removeAttribute("disabled");
-                            swal.fire({
-                            title: result.title,
-                            type: result.icon,
-                            text: result.msg,
-                            confirmButtonColor: "#007bff",
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: true
-                            })
-                            .then(function(){ location.reload();});
-            
-                        }else{ 
-                            $('#udBtn').text('Submit');
-                            document.getElementById('udBtn').removeAttribute("disabled");
-                            swal.fire({
-                            title: "Error",
-                            type: "warning",
-                            text: "Something went wrong! Please try again",
-                            confirmButtonColor: "#007bff",
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: true
-                            })
-                        }
-                    },
-                    error: function(xhr, status, error) { 
-                        $('#udBtn').text('Submit');
-                        document.getElementById('udBtn').removeAttribute("disabled");
-                        swal.fire({
-                            title: "Error",
-                            type: "warning",
-                            text: error,          //"Something went wrong! Please try again! aaaaaaaaaaa",
-                            confirmButtonColor: "#007bff",
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: true
-                            });
-                            }
-                });
-                return false; // Prevent regular form submission
-            }
-        });
+$(document).on('click', '.captcha-refresh', function (e) {
+    e.preventDefault();
+    $.getJSON('/captcha/refresh/', function (json) {
+        $('input[name="captcha_0"]').val(json.key);
+        $('img.captcha').attr('src', json.image_url);
     });
+});
 </script>

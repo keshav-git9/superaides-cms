@@ -5,11 +5,18 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Super Aides</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Meciy HTML 5 Template " />
-    <meta title="Compassionate Companion Care on Your Terms | SuperAides" />
-    <meta property="og:title" content="Compassionate Companion Care on Your Terms | SuperAides" />
+    <title>{{page_content.title}}</title>  
+    {% if post.meta_title %}
+        <meta title="{{ post.meta_title }}" /> 
+        <meta name="description" content="{{ post.meta_desc }}" />    
+        <meta description="{{ post.meta_desc }}" rel="stylesheet" />
+        <meta name="keywords" content="{{ post.meta_keyword }}">
+    {% else %}
+        <meta title="{{page_content.meta_title}}" /> 
+        <meta name="description" content="{{page_content.meta_desc}}" />    
+        <meta description="{{page_content.meta_desc}}" rel="stylesheet" />
+        <meta name="keywords" content="{{ page_content.meta_keyword}}">
+    {% endif %}  
     <meta
         description="Get personalized, non-medical care for the elderly at home with SuperAides. Enjoy emotional support, daily assistance & safe transport." />
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/favicons/apple-touch-icon.png' %}" />

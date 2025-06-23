@@ -8,7 +8,7 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Navigation Child Group Page List</h1>                              
+                <h1 class="page-title">Sub Menu Navigation List</h1>                              
             </div>
             <div class="page-content fade-in-up">               
                 <div class="ibox">   
@@ -16,7 +16,7 @@
                     <div class="ibox-body">
                         <div class="row" style="padding: 0px 28px 20px 30px;">
                             <div class="col-sm-12 col-md-6">
-                                 <a class="btn btn-success" href="{% url 'navi-group-child-page-add' npid %}">Add Navigation Child Group Page </a>
+                                 <a class="btn btn-success" href="{% url 'navi-group-child-page-add' npid %}">Add Sub Menu Navigation </a>
                                 <div  id="example-table_length">
                                     <div class="row" style="float: left;">
                                         <div class="col-md-2">Show</div>
@@ -24,7 +24,7 @@
                                         <select name="example-table_length" style="width: 5rem;"  aria-controls="example-table" class="form-control form-control-sm">                                        
                                         </select> 
                                         </div>
-                                        <div class="col-md-2">entries</div>
+                                        <div class="col-md-2">Entries</div>
                                    </div>
                                 </div>
                             </div>
@@ -53,11 +53,11 @@
                             <thead>
                                 <tr>
 
-                                   <td>Sr.No.</td>
+                                   <td>Sl. No.</td>
                                     <th>Link Title</th>
                                     <th>URL</th>
                                     <th>Order</th>
-                                    <th>Child Pages</th>    
+                                    <th>Child Menus</th>    
                                     <th>Status</th>                                    
                                     <th>Action</th>
                                 </tr>
@@ -75,11 +75,13 @@
                                             {% endif %}   
                                         </td>
                                         <td>{{ item.order }}</td>
-                                        <td><a href="{% url 'navi-group-child-page' item.id %}">Add Child Pages</a></td>
+                                        <td><a href="{% url 'navi-group-child-page' item.id %}">Child Menus Navigation</a></td>
                                         <td> 
-                                            <button class="btn btn-xs {% if item.status == False %} btn-danger {% else %} font-weight-bold text-primary {% endif %}" onclick="changeStatus({{item.id}},0)">Inactive </button>
+                                            <!---<button class="btn btn-xs {% if item.status == False %} btn-danger {% else %} font-weight-bold text-primary {% endif %}" onclick="changeStatus({{item.id}},0)">Inactive </button>
                                             <button class="btn btn-xs {% if item.status == True %} btn-success {% else %} font-weight-bold text-primary {% endif %}" onclick="changeStatus({{item.id}},1)">Active</button>
-                                         
+                                         -->
+                                            <button class="btn btn-xs {% if item.status == True %} btn-success {% else %} btn-danger {% endif %}" 
+                                            onclick="changeStatus({{item.id}}, {% if item.status == True %} 0 {% else %} 1 {% endif %} )"> {% if item.status == True %} Active {% else %} Inactive {% endif %}</button>
                                         </td> 
                                         <td>
                                             <span class="dis_in" title="" data-toggle="tooltip" data-placement="top" data-original-title="Edit">
