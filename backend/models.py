@@ -8,8 +8,10 @@ from django.utils.text import slugify
 from .managers import CustomUserManager
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
+
+
 
 class CustomUser(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
@@ -186,7 +188,7 @@ class Testimonial(models.Model):
 
 #===============================================================================================
     
-class Cms_setting(models.Model):
+"""class Cms_setting(models.Model):
     existing_logo_title =models.CharField(max_length=250, null=True, blank=True)
     existing_logo = models.FileField(upload_to='images/', default='images/default_logo.png')     
     footer_logo = models.FileField(upload_to='images/', default='images/default_logo.png')
@@ -221,9 +223,10 @@ class Cms_setting(models.Model):
             verbose_name_plural = "Cms_settings"
         
     def __str__(self):
-        return self.existing_logo_title or "Unnamed Object"       
+        return self.existing_logo_title or 'Unnamed Object'"""       
 
-"""class Cms_setting(models.Model):
+
+class Cms_setting(models.Model):
     existing_logo_title =models.CharField(max_length=250)
     existing_logo = models.FileField(upload_to='images/', default='images/default_logo.png')     
     footer_logo = models.FileField(upload_to='images/', default='images/default_logo.png')
@@ -258,6 +261,6 @@ class Cms_setting(models.Model):
             verbose_name_plural = "Cms_settings"
         
     def __str__(self):
-        return self.existing_logo_title or 'Unnamed Object'"""
+        return self.existing_logo_title or "Unnamed Object"
     
 #=========================================================================================

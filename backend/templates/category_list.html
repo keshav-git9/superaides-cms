@@ -62,8 +62,7 @@
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ item.name }}</td>
-                                        <td><a href=" {{ request.scheme }}://{{ request.get_host }}/category/{{ item.slug }}" target="_blank">{{ item.slug }}</a></td>
-                                                                                                                  
+                                        <td><a href=" {{ request.scheme }}://{{ request.get_host }}/category/{{ item.slug }}" target="_blank">{{ item.slug }}</a></td>                                                                
                                         <td>
                                             <span class="dis_in" title="" data-toggle="tooltip" data-placement="top" data-original-title="Edit">
                                                 <a href="{% url 'category-edit' item.id %}">Edit</a>

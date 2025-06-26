@@ -51,7 +51,7 @@
                                      <select name="page" id="page" class="form-control" style="width:400px">  
                                         <option value="" >-- Select Page --</option>                                      
                                         {% for page in pagedata %}     
-                                        <option value="{{page.url}}" {% if page.title == data.title %}selected{% endif %} >{{page.title}}</option>                                        
+                                        <option value="{{page.url}}" {% if page.id == data.page_id %}selected{% endif %} >{{page.title}}</option>                                        
                                         {% empty %}
                                         <option value="0" >No Page Available</option>
                                         {% endfor %} 

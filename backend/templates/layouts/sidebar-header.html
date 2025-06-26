@@ -1,10 +1,12 @@
+
+<style>#example-table_length{DISPLAY: none;} </style>
 <header class="header">
             <div class="page-brand">                
                
                 <a class="link ml-1" href="{% url 'dashboard' %}">
-                    <span class="brand">SuperAides
+                    <span class="brand"><img src="/media/images/superaid-logo_oTQEf8d.png" alt="Superaides" title="Superaides" style="width: 15%;">SuperAides
                     </span>
-                    <span class="brand-mini">TSA</span>
+                    <span class="brand-mini">SPA</span>
                 </a>
             </div> 
             
@@ -18,7 +20,7 @@
                 <!-- END TOP-LEFT TOOLBAR-->
                 <!-- START TOP-RIGHT TOOLBAR-->
                 <ul class="nav navbar-toolbar">
-                    <li class="dropdown dropdown-inbox">
+                    <!---<li class="dropdown dropdown-inbox">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>
                             <span class="badge badge-primary envelope-badge">9</span>
                         </a>
@@ -129,15 +131,15 @@
                                 </div>
                             </li>
                         </ul>
-                    </li>
+                    </li>--->
                     <li class="dropdown dropdown-user">
                         <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                             <img src="/static/admin/assets/img/admin-avatar.png" />
                             <span > {{ request.user.username }}</span><i class="fa fa-angle-down m-l-5"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
+                            <!---<a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profile</a>
                             <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Settings</a>
-                            <a class="dropdown-item" href="javascript:;"><i class="fa fa-support"></i>Support</a>
+                            <a class="dropdown-item" href="javascript:;"><i class="fa fa-support"></i>Support</a>--->
                             <li class="dropdown-divider"></li>
                             <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-power-off"></i>Logout</a>
                         </ul>
@@ -181,8 +183,13 @@
                             </li>
                         </ul>
                     </li>
-            
-                    <li class='{% if "post" in request.path   or "category-list" in request.path or "comment-list" in request.path%} active {% endif %}' >
+                    <li class='{% if "category" in request.path %} active {% endif %}'>
+                        <a href="{% url 'category-list' %}" style="text-transform: uppercase;"><i class="sidebar-item-icon fa fa-smile-o"></i>
+                            <span class="nav-label" >POST Categories</span>
+                        </a>
+                    </li> 
+
+                    <li class='{% if "post" in request.path %} active {% endif %}' >
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
                             <span class="nav-label">POST</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse">
@@ -202,11 +209,7 @@
                             </li>-->                           
                         </ul>
                     </li>
-                     <li class='{% if "category-list" in request.path %} active {% endif %}'>
-                        <a href="{% url 'category-list' %}" style="text-transform: uppercase;"><i class="sidebar-item-icon fa fa-smile-o"></i>
-                            <span class="nav-label" >POST Categories</span>
-                        </a>
-                    </li> 
+                    
                     <li class='{% if "comment-list" in request.path %} active {% endif %}'>
                         <a href="{% url 'comment-list' %}" style="text-transform: uppercase;"><i class="sidebar-item-icon fa fa-smile-o"></i>
                             <span class="nav-label" >POST Comments</span>

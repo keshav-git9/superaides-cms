@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 	'backend',
 	'ckeditor',
     'ckeditor_uploader',
@@ -236,7 +237,6 @@ CKEDITOR_CONFIGS = {
 }
 
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -256,5 +256,5 @@ CAPTCHA_BACKGROUND_COLOR = '#ebebea'  # Set the background color
 CAPTCHA_FOREGROUND_COLOR = '#001100'  # Set the text color
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'  # Use a random character challenge
 CAPTCHA_NOISE_FUNCTIONS = ()   # Add noise to the CAPTCHA
-CAPTCHA_FONT_PATH = 'G:/django-project/superaids-cms/fonts/roboto/Roboto-Black.ttf'  # Path to a custom font file
+CAPTCHA_FONT_PATH = 'G:/django-project/Vitel_Bitbuckets/supersaids_python/fonts/roboto/Roboto-Black.ttf'  # Path to a custom font file
 CAPTCHA_LENGTH = 4  # Number of characters in the CAPTCHA

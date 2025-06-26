@@ -22,19 +22,19 @@ from django.conf.urls.static import static
 from django.conf.urls import handler404
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('superaides-cms/',include('backend.urls')),
-    #path('auth/',include('backend.urls')),
-    
+    #path('auth/',include('backend.urls')),    
     path('forum/', include('forum.urls')),  
-
 	path('ckeditor/', include('ckeditor_uploader.urls')),
 	path('', include('frontend.urls')),  	
-    path('captcha/', include('captcha.urls')),		
+    path('captcha/', include('captcha.urls')),	   
+	
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

@@ -83,8 +83,28 @@
                                             <!---<button class="btn btn-xs {% if item.is_active == False %} btn-danger {% else %} font-weight-bold text-primary {% endif %}" onclick="changeStatus({{item.id}},0)">Inactive </button>
                                             <button class="btn btn-xs {% if item.is_active == True %} btn-success {% else %} font-weight-bold text-primary {% endif %}" onclick="changeStatus({{item.id}},1)">Active</button>
                                      -->   
-                                            <button class="btn btn-xs {% if item.is_active == True %} btn-success {% else %} btn-danger {% endif %}" 
-                                            onclick="changeStatus({{item.id}}, {% if item.is_active == True %} 0 {% else %} 1 {% endif %} )"> {% if item.is_active == True %} Active {% else %} Inactive {% endif %}</button>
+                                            
+                                       
+  {% for group in item.groups.all %}
+    {% if group.name == "Admin" %}
+        <button class="btn-disabled btn btn-xs {% if item.is_active %} btn-success {% else %} btn-danger {% endif %}" disabled> Active </button>
+    {% else %}
+        <button class="btn btn-xs {% if item.is_active %} btn-success {% else %} btn-danger {% endif %}"
+                onclick="changeStatus({{ item.id }}, {% if item.is_active %} 0 {% else %} 1 {% endif %})">
+            {% if item.is_active %} Active {% else %} Inactive {% endif %}
+        </button>
+    {% endif %}
+
+    {% if not forloop.last %}, {% endif %}
+{% empty %}
+    <button class="btn btn-xs {% if item.is_active %} btn-success {% else %} btn-danger {% endif %}"
+            onclick="changeStatus({{ item.id }}, {% if item.is_active %} 0 {% else %} 1 {% endif %})">
+        {% if item.is_active %} Active {% else %} Inactive {% endif %}
+    </button>
+{% endfor %}
+
+                                       
+                                       
                                         </td>                                       
                                         <td>
                                             <span class="dis_in" title="" data-toggle="tooltip" data-placement="top" data-original-title="Edit">

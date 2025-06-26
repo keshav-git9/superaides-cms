@@ -1,6 +1,44 @@
 {% extends 'layouts/headerapp.html' %}
 {% block content %}
+<style>
+/* container */
+.tooltip1 {
+  position: relative;
+  display: inline-block;
+  cursor: help;              /* show question-mark cursor */
+}
 
+/* hidden tooltip text */
+.tooltiptext1 {
+  visibility: hidden;
+  width: max-content;        /* expand to content width */
+  max-width: 300px;          /* optional max width */
+  background-color: rgba(0,0,0,0.75);
+  color: #fff;
+  text-align: left;
+  padding: 6px 8px;
+  border-radius: 4px;
+
+  /* position above the text */
+  position: absolute;
+  bottom: 100%;              /* show above the truncated text */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
+  /* fade in/out */
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;      /* don’t block mouse events */
+}
+
+/* show on hover */
+.tooltip1:hover .tooltiptext1 {
+  visibility: visible;
+  opacity: 1;
+}
+
+</style>
     <div class="page-wrapper">
         <!-- START HEADER-->
         {% include "layouts/sidebar-header.html" %}           
@@ -67,7 +105,11 @@
                                         <td>{{ item.name }}</td>
                                         <td>{{ item.designation }}</td>
                                         <td>{{ item.rating }}</td>
-                                        <td> {{ item.contents|safe }}</td>
+                                        <!--<td> {{ item.contents|safe }}</td>-->
+										<td class="tooltip1">
+										  {{ item.contents|safe|truncatechars:20 }}
+										  <span class="tooltiptext1">{{ item.contents}}</span>
+										</td>
                                         <td style="width: 120px;"> 
                                         <!---- <button class="btn {% if item.status == 1 %} btn-success {% else %} btn-danger {% endif %}  btn-xs">{% if item.status == 1 %}Enable{% else %}Disable{% endif %}</button>
                                          -->

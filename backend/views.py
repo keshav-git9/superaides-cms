@@ -94,11 +94,11 @@ def dashboard_view(request):
     if request.user.groups.filter(name="Admin").exists():
         #return HttpResponse("Welcome Admin!")
         #return render(request, 'dashboard.html')
-        return redirect('list-html')
+        return redirect('page-list')
     elif request.user.groups.filter(name="Manager").exists():
         #return HttpResponse("Welcome Manager!")
         #return render(request, 'dashboard.html')
-        return redirect('list-html')
+        return redirect('page-list')
     elif request.user.groups.filter(name="Editor").exists():
         return HttpResponse("Welcome Editor!")
     else:
@@ -316,11 +316,13 @@ def page_edit(request, id):
 def change_page_status(request):
     if request.method == "POST":
         try:
-            post_id = int(request.POST.get('post_id'))
+            page_id = int(request.POST.get('post_id'))
             status = request.POST.get('status') == '1'
-            comment = Pages.objects.get(id=post_id)
+            comment = Pages.objects.get(id=page_id)
             comment.status = status
-            comment.save()            
+            comment.save() 
+            # Step 2: Update Navigroupspages table entries linked to this page
+            Navigroupspages.objects.filter(page_id=page_id).update(status=1 if status else 0)           
             msg = {'response': 'success', 'title':'Data Saved!', 'icon':'success',  'msg': 'Your data has been successfully update.'}
             return JsonResponse(msg, safe=True) 
         except Exception as e:
@@ -332,12 +334,17 @@ def change_page_status(request):
 @csrf_exempt
 def delete_page(request):
     if request.method == 'POST':
-        post_id = request.POST.get('id')
+        page_id = request.POST.get('id')
         try:
-            post = Pages.objects.get(id=post_id)
-            post.delete()
-            return JsonResponse({'status': 'success'})            
-        except Post.DoesNotExist:
+            page = Pages.objects.get(id=page_id)
+            #Navigroupspages.objects.filter(page_id=page_id)
+            if Navigroupspages.objects.filter(page_id=page_id).exists():
+                return JsonResponse({'status': 'error','message': 'Page is linked to a menu and cannot be deleted.' })
+            else:
+                page.delete()
+                return JsonResponse({'status': 'success'})      
+                  
+        except page.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Post not found'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request'})
 
@@ -494,11 +501,19 @@ def navigrouppage(request, nid):
 @auth
 @csrf_exempt
 def navigrouppage_add(request, nid): 
-    page_data = Pages.objects.all()
-    
+    page_data = Pages.objects.all()    
     if request.method == 'POST':
+        pageurl = request.POST.get('page')  # safely get page ID from form
+        try:
+            pageobj = Pages.objects.get(url=pageurl)
+            page_id = pageobj.id  # get ID
+            page_title = pageobj.title  # get ID            
+        except Pages.DoesNotExist:            
+            page_id = None
+
         allData = request.POST.copy()  # Create a mutable copy of request.POST
         allData['navi_code'] = nid  # Injecting nid into POST data 
+        allData['page_id'] = page_id
         # Ensure required fields have default values if not provided
         #for field in ['parent', 'order', 'target', 'external_link', 'link_type']:
             #allData.setdefault(field, 0)     
@@ -527,9 +542,21 @@ def navigroupspage_edit(request, nid, id):
     item = get_object_or_404(Navigroupspages, id=id) 
     data = Navigroupspages.objects.filter(id=id).first()  
     page_data = Pages.objects.all()       
-    if request.method == "POST":     
+    if request.method == "POST":   
+        pageurl = request.POST.get('page')  # safely get page ID from form
+        try:
+            pageobj = Pages.objects.get(url=pageurl)
+            page_id = pageobj.id  # get ID
+            page_title = pageobj.title  # get ID            
+        except Pages.DoesNotExist:            
+            page_id = None
+
+
+        #print(pageobj)
         allData = request.POST.copy()  # Create a mutable copy of request.POST
         allData['navi_code'] = nid  # Injecting nid into POST data 
+        allData['page_id'] = page_id
+
         allFiles = request.FILES          
         form = NavigrouppageForm(data=allData, files=allFiles, instance=item)
        
@@ -618,9 +645,18 @@ def navigroupchildpage_add(request, npid):
     navi_code = Navigroupspages.objects.filter(id=npid).values_list('navi_code', flat=True).first()
         
     if request.method == 'POST':
+        pageurl = request.POST.get('page')  # safely get page ID from form
+        try:
+            pageobj = Pages.objects.get(url=pageurl)
+            page_id = pageobj.id  # get ID
+            page_title = pageobj.title  # get ID            
+        except Pages.DoesNotExist:            
+            page_id = None
+
         allData = request.POST.copy()  # Create a mutable copy of request.POST
         allData['navi_code'] = navi_code  # Injecting navi_code into POST data 
-        allData['parent'] = npid  # Injecting nid into POST data        
+        allData['parent'] = npid  # Injecting nid into POST data
+        allData['page_id'] = page_id        
         # Ensure required fields have default values if not provided        
         #for field in ['order', 'target', 'external_link', 'link_type']:
         #    allData.setdefault(field, 0)
@@ -652,9 +688,18 @@ def navigroupschildpage_edit(request, npid, id):
 
     page_data = Pages.objects.all()       
     if request.method == "POST":     
+        pageurl = request.POST.get('page')  # safely get page ID from form
+        try:
+            pageobj = Pages.objects.get(url=pageurl)
+            page_id = pageobj.id  # get ID
+            page_title = pageobj.title  # get ID            
+        except Pages.DoesNotExist:            
+            page_id = None
+
         allData = request.POST.copy()  # Create a mutable copy of request.POST
         allData['navi_code'] = navi_code  # Injecting nid into POST data 
         allData['parent'] = npid  # Injecting nid into POST data 
+        allData['page_id'] = page_id 
         # Ensure required fields have default values if not provided
         #for field in ['order', 'target', 'external_link', 'link_type']:
         #    allData.setdefault(field, 0)

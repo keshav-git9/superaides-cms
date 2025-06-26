@@ -68,12 +68,21 @@
                                     <tr id="row-{{ item.id }}">
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ item.title }}</td>
-                                        <td>{{ request.scheme }}://{{ request.get_host }}/
+                                        <td><a href="{{ request.scheme }}://{{ request.get_host }}/
                                             {% if item.link_type == 0 %}
-                                                {{ item.page }}  {# This does not exist #}
+                                                {{ item.page|default:"" }}  {# This does not exist #}
                                             {% else %}
-                                                {{ item.external_link }}
-                                            {% endif %}   
+                                                {{ item.external_link|default:"" }}
+                                            {% endif %}" target="_blank">{{ request.scheme }}://{{ request.get_host }}/
+                                            {% if item.link_type == 0 %}
+                                                {{ item.page|default:"" }}  {# This does not exist #}
+                                            {% else %}
+                                                {{ item.external_link|default:"" }}
+                                            {% endif %}  
+											</a>
+										
+																				
+										  
                                         </td>
                                         <td>{{ item.order }}</td>
                                         <td><a href="{% url 'navi-group-child-page' item.id %}">Sub Menus</a></td>

@@ -50,13 +50,13 @@
                                 <div class="tab-pane fade show active" id="tab-2-1">
                                     <p>Please complete the form below. Mandatory fields marked <em class="text-danger">*</em></p>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Code <em class="text-danger">*</em>:</label>
+                                        <label class="col-sm-2 col-form-label">Banner Header Title <em class="text-danger">*</em>:</label>
                                         <div class="col-sm-9">
                                             <input class="form-control" type="text" name="code" id="code" value="{{data.code}}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Title <em class="text-danger">*</em>:</label>
+                                        <label class="col-sm-2 col-form-label">Banner Sub Title <em class="text-danger">*</em>:</label>
                                         <div class="col-sm-9">
                                             <input class="form-control" type="text" name="title" id="title" value="{{data.title}}" >
                                         </div>
@@ -65,12 +65,40 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Url <em class="text-danger">*</em>: </label>
                                         <div class="col-sm-9 row">
-                                            <div class="col-sm-2" style="margin-top: 8px;">
+                                            <div class="col-sm-2" style="margin-top: 8px;margin-right: 40px;">
                                             {{ request.scheme }}://{{ request.get_host }}/
                                             </div>
-                                            <div class="col-sm-9">
+                                            <div class="col-sm-9 tooltip-wrapper">
                                            <input class="form-control" style="width:300px" type="text" name="url" id="url" value="{{data.url}}">
+										    <span class="tooltip-text">Page url</span>
                                            </div>
+										   <style>.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 6px;
+  position: absolute;
+  z-index: 1;
+  top: -35px; /* adjust as needed */
+  left: 0;
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
                                         </div>
                                     </div>
                                     
@@ -78,8 +106,8 @@
                                         <label class="col-sm-2 col-form-label">Status  <em class="text-danger">*</em>: </label> 
                                         <div class="col-sm-10">                                                                       
                                             <select name="status" id="status" class="form-control"  style="width:427px">
-                                                <option value="1" {% if data.status == '1' %}selected{% endif %} >Enable</option>
-                                                <option value="0" {% if data.status == '0' %}selected{% endif %} >Disable</option>
+                                                <option value="1" {% if data.status == '1' %}selected{% endif %} >Active</option>
+                                                <option value="0" {% if data.status == '0' %}selected{% endif %} >Inactive</option>
                                             </select>    
                                         </div>
                                     </div>

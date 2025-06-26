@@ -1,4 +1,5 @@
 from django.urls import path 
+from django.contrib.auth import views as auth_views
 from . import views
 
 
@@ -10,14 +11,17 @@ urlpatterns = [
     path('logout/',views.logout_view,name='logout'),
     path('dashboard/',views.dashboard_view,name='dashboard'),
 
- 
+    path('password-reset/', auth_views.PasswordResetView.as_view(template_name='auth/password_reset.html'), name='password_reset'),
+    path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='auth/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='auth/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='auth/password_reset_complete.html'), name='password_reset_complete'),
+
 	path('add-html/',views.addhtml_view,name='add-html'),	
     path('list-html/', views.listHtml_view, name = 'list-html'),
     path('edit-html/<int:id>/', views.edithtml_view, name='edit-html'),
     path('html-status/', views.change_html_status, name='change_html_status'),
     path('delete-html/', views.delete_html, name='delete-html'),
     
-
     path('page-list/', views.pagelist, name = 'page-list'),
     path('page-add/',views.page_add,name='page-add'),
     path('page-edit/<int:id>/', views.page_edit, name='page-edit'),   
